@@ -1,0 +1,132 @@
+name: Deploy
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      fasttrack:
+        description: "Skip build prechecks"
+        type: boolean
+        default: false
+concurrency:
+  group: ci-deploy-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    env:
+      GITLEAKS_VERSION: 8.30.0
+    steps:
+      - name: Clone repositories
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Bun environment
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+
+      - name: Bun install
+        run: bun install --exact --frozen-lockfile --no-summary
+
+      - name: Create .env.test file
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) }}
+        run: echo "${{ secrets.ENV_TEST }}" > .env.test
+
+      - name: Read Playwright version
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) }}
+        id: pw
+        run: |
+          VERSION=$(jq -r '.devDependencies["@playwright/test"] // "unknown"' package.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ms-pw-${{ runner.os }}-${{ steps.pw.outputs.version }}
+
+      - name: Cache TS buildinfo
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) }}
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/*.tsbuildinfo
+          key: tsbuildinfo-${{ runner.os }}-${{ hashFiles('tsconfig*.json') }}
+          restore-keys: |
+            tsbuildinfo-${{ runner.os }}-
+
+      - name: Read ShellCheck wrapper version
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) }}
+        id: sc
+        run: |
+          VERSION=$(jq -r '.devDependencies.shellcheck // "unknown"' package.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Cache ShellCheck
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) }}
+        uses: actions/cache@v4
+        with:
+          path: node_modules/shellcheck/bin
+          key: shellcheck-${{ runner.os }}-${{ steps.sc.outputs.version }}
+
+      - name: Cache Gitleaks
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) }}
+        id: gl-cache
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.local/bin/gitleaks
+          key: gitleaks-${{ runner.os }}-${{ env.GITLEAKS_VERSION }}
+
+      - name: Install Gitleaks
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) && steps.gl-cache.outputs.cache-hit != 'true' }}
+        run: |
+          mkdir -p /home/runner/.local/bin
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" | tar -xz -C /home/runner/.local/bin gitleaks
+
+      - name: Add Gitleaks to PATH
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) }}
+        run: echo "/home/runner/.local/bin" >> $GITHUB_PATH
+
+      - name: Run build prechecks
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) }}
+        run: ./bgord-scripts/build-prechecks.sh
+
+      - name: Build app
+        run: ./scripts/production-server-build.sh
+
+      - name: Generate build info
+        run: ./bgord-scripts/build-info-generate.sh "${{ github.sha }}"
+
+      - name: Inspect app size
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.fasttrack) }}
+        run: ./bgord-scripts/production-server-inspect.sh ${{ secrets.PROJECT_NAME }}
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/production.key
+          chmod 600 ~/.ssh/production.key
+          cat >>~/.ssh/config <<END
+          Host production
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/production.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.USER }}
+          SSH_KEY: ${{ secrets.PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.HOSTNAME }}
+
+      - name: Clean public
+        run: ssh production "cd /var/www/${{ secrets.PROJECT_NAME }} && rm -rf public/"
+
+      - name: Sync source code
+        run: rsync -azP output/ production:/var/www/${{ secrets.PROJECT_NAME }}
+
+      - name: Restart server
+        run: ssh production sudo systemctl restart ${{ secrets.PROJECT_NAME }}.service
