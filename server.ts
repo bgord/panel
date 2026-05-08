@@ -1,0 +1,55 @@
+import * as bg from "@bgord/bun";
+import { Hono } from "hono";
+import { HTTP } from "+app";
+import type * as infra from "+infra";
+import { languages } from "+languages";
+import type { BootstrapType } from "+infra/bootstrap";
+
+export function createServer({ Env, Adapters, Tools }: BootstrapType) {
+  const CacheRepository = new bg.CacheRepositoryNodeCacheAdapter({ type: "infinite" });
+  const CacheResolver = new bg.CacheResolverSimpleStrategy({ CacheRepository });
+
+  const origin = ["http://localhost:3000", "https://panel.bgord.dev"];
+
+  const server = new Hono<infra.Config>()
+    .basePath("/api")
+    .use(
+      ...bg.SetupHono.essentials(
+        {
+          csrf: { origin },
+          cors: { origin },
+          I18n: { languages, strategies: [new bg.LanguageDetectorCookieStrategy("language")] },
+        },
+        { ...Adapters.System, ...Tools, CacheResolver },
+      ),
+    )
+    .use(Tools.ShieldSecurity.handle());
+
+  // Probes =================
+  server.get("/liveness", ...new bg.LivenessHonoHandler().handle());
+  server.get(
+    "/readiness",
+    Tools.ShieldTimeout.handle(),
+    ...new bg.ReadinessHonoHandler({ prerequisites: Tools.Prerequisites.readiness }).handle(),
+  );
+  server.get(
+    "/healthcheck",
+    Tools.ShieldRateLimit.handle(),
+    Tools.ShieldTimeout.handle(),
+    Tools.ShieldBasicAuth.handle(),
+    ...new bg.HealthcheckHonoHandler(
+      { Env: Env.type, prerequisites: Tools.Prerequisites.healthcheck },
+      {
+        ...Adapters.System,
+        ...Tools,
+        LoggerStatsProvider: Adapters.System.Logger,
+        JobQueueStatsProvider: Tools.JobQueueStatsProvider,
+      },
+    ).handle(),
+  );
+  // =============================
+
+  server.onError(HTTP.ErrorHandler.handle(Adapters.System));
+
+  return server;
+}
