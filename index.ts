@@ -3,7 +3,6 @@ import * as tools from "@bgord/tools";
 import { bootstrap } from "+infra/bootstrap";
 import { registerCommandHandlers } from "+infra/register-command-handlers";
 import { registerCronTasks } from "+infra/register-cron-tasks";
-import { registerEventHandlers } from "+infra/register-event-handlers";
 import { createServer } from "./server";
 
 (async function main() {
@@ -13,7 +12,6 @@ import { createServer } from "./server";
   await new bg.PrerequisiteRunnerStartup(di.Adapters.System).check(di.Tools.Prerequisites.healthcheck);
   bg.EventLoopLag.start();
 
-  registerEventHandlers(di.Env, di);
   registerCommandHandlers(di);
   registerCronTasks(di);
 
