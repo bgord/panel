@@ -1,9 +1,9 @@
 import * as bg from "@bgord/bun";
+import type * as Panel from "+panel";
 
 type Dependencies = { Logger: bg.LoggerPort };
 
-// TODO
-type AcceptedCommand = bg.Preferences.Commands.SetUserLanguageCommandType;
+type AcceptedCommand = Panel.Commands.GeneratePanelCommandType;
 
 export function createCommandBus(deps: Dependencies): bg.CommandBusPort<AcceptedCommand> {
   const inner = new bg.CommandBusEmitteryAdapter<AcceptedCommand>();
