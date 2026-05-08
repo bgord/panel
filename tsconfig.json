@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "incremental": true,
+    "jsx": "react-jsx",
+    "lib": ["ESNext", "DOM"],
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "paths": {
+      "+infra": ["./infra/index"],
+      "+infra/*": ["./infra/*"],
+      "+app": ["./app/index"],
+      "+app/*": ["./app/*"],
+      "+languages": ["./modules/languages.ts"],
+      "+panel": ["./modules/panel/index"],
+      "+panel/*": ["./modules/panel/*"],
+      "+system": ["./modules/system/index"],
+      "+system/*": ["./modules/system/*"]
+    },
+    "types": ["@types/bun"]
+  },
+  "exclude": ["bgord-scripts", "web/"]
+}
