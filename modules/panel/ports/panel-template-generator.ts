@@ -1,5 +1,5 @@
 import type * as Panel from "+panel";
 
-export interface PanelGenerator {
+export interface PanelTemplateGenerator {
   generate(weather: Panel.Ports.WeatherCurrent): string;
 }

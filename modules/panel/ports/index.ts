@@ -1,2 +1,2 @@
-export * from "./panel-generator";
+export * from "./panel-template-generator";
 export * from "./weather-current-reader";
