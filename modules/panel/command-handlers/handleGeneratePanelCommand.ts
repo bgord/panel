@@ -2,6 +2,7 @@ import type * as Panel from "+panel";
 
 type Dependencies = {
   WeatherCurrentReader: Panel.Ports.WeatherCurrentReader;
+  PanelGenerator: Panel.Ports.PanelGenerator;
 };
 
 export const handleGeneratePanelCommand =
