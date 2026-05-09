@@ -6,4 +6,7 @@ type Dependencies = {
 };
 
 export const handleGeneratePanelCommand =
-  (_deps: Dependencies) => async (_command: Panel.Commands.GeneratePanelCommandType) => {};
+  (deps: Dependencies) => async (command: Panel.Commands.GeneratePanelCommandType) => {
+    const weather = await deps.WeatherCurrentReader.read(command.payload.location);
+    const panel = deps.PanelGenerator.generate(weather);
+  };
