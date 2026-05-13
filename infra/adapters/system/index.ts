@@ -41,7 +41,7 @@ export async function createSystemAdapters(Env: EnvironmentResultType) {
     FileRenamer,
     TemporaryFile,
     HashFile,
-    ImageProcessor: await createImageProcessor(Env, { FileCleaner, FileRenamer, FileReaderJson }),
+    ImageProcessor: createImageProcessor(Env, { FileCleaner, FileRenamer, FileReaderJson, FileWriter }),
     Sleeper,
     TimeoutRunner,
     RemoteFileStorage: createRemoteFileStorage(Env, { HashFile, FileCleaner, FileRenamer, Logger, Clock }),
