@@ -5,7 +5,7 @@ import type { EnvironmentResultType } from "+infra/env";
 
 type Dependencies = { FileReaderText: bg.FileReaderTextPort };
 
-const template = /* HTML */ (weather: Panel.Ports.Weather, css: string) => `
+export const template = /* HTML */ (weather: Panel.Ports.Weather, css: string) => `
     <html>
       <head>
         <meta charset="utf-8"  />
@@ -29,8 +29,6 @@ const template = /* HTML */ (weather: Panel.Ports.Weather, css: string) => `
 
         <section data-stack="y" data-cross="center" data-p="3">
           <div data-fs="5xl" data-color="neutral-500" data-my="5">${weather.location}</div>
-
-          <div data-fs="5xl" data-color="neutral-600" data-my="8">15:25</div>
 
           <div data-stack="x" data-gap="12" >
             <div data-stack="y" data-cross="center" data-main="between">
@@ -57,7 +55,7 @@ const template = /* HTML */ (weather: Panel.Ports.Weather, css: string) => `
     </html>
   `;
 
-class PanelTemplateGeneratorAdapter implements Panel.Ports.PanelTemplateGenerator {
+export class PanelTemplateGeneratorAdapter implements Panel.Ports.PanelTemplateGenerator {
   constructor(
     private readonly template: (weahter: Panel.Ports.Weather, css: string) => string,
     private readonly css: string,

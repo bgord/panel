@@ -36,6 +36,15 @@ export const stream = () => new ReadableStream({ start: (controller) => controll
 // Panel
 export const location = v.parse(Panel.VO.PanelLocation, "Warsaw");
 export const objectKey = v.parse(tools.ObjectKey, "panels/panel.png");
+export const weather: Panel.Ports.Weather = {
+  location,
+  temperatureCelsius: tools.Int.of(15),
+  feelsLikeCelsius: tools.Int.of(14),
+  precipitation: { probability: tools.Int.nonNegative(90), hour: tools.Hour.fromValue(15).get() },
+  generatedAt: T0,
+  condition: "sunny",
+  conditionImageUrl: "https://example.com",
+};
 
 export const IntentionalError = "intentional.error" as const;
 export const throwIntentionalError = () => {
