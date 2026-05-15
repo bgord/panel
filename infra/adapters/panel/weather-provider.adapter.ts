@@ -6,8 +6,11 @@ import type { EnvironmentResultType } from "+infra/env";
 type Dependencies = { Clock: bg.ClockPort };
 
 type OpenMeteoCoordinates = { latitude: number; longitude: number };
-type OpenMeteoGeocodingResult = { results: Array<{ latitude: number; longitude: number }> };
-type OpenMeteoCurrentWeatherResult = { current: { temperature_2m: number } };
+type OpenMeteoGeocodingResult = { results: Array<OpenMeteoCoordinates> };
+type OpenMeteoCurrentWeatherResult = {
+  current: { temperature_2m: number };
+  hourly: { precipitation_probability: Array<number> };
+};
 
 const WeatherProviderOpenMeteoAdapterError = {
   GeocodingFailed: "weather.provider.open.meteo.adapter.geocoding.failed",
@@ -45,6 +48,8 @@ class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
     const url = new URL("https://api.open-meteo.com/v1/forecast");
     url.searchParams.set("latitude", this.coordinates.latitude.toString());
     url.searchParams.set("longitude", this.coordinates.longitude.toString());
+    url.searchParams.set("hourly", "precipitation_probability");
+    url.searchParams.set("forecast_days", "1");
     url.searchParams.set("current", "temperature_2m");
     url.searchParams.set("timezone", "Europe/Warsaw");
 
@@ -53,9 +58,18 @@ class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
 
     const weather = (await response.json()) as OpenMeteoCurrentWeatherResult;
 
+    const hourlyProbabilities = weather.hourly.precipitation_probability;
+
+    const peakHour = hourlyProbabilities.indexOf(Math.max(...hourlyProbabilities));
+    const peakProbability = hourlyProbabilities[peakHour];
+
     return {
       location,
       temperatureCelsius: tools.Int.of(this.rounding.round(weather.current.temperature_2m)),
+      precipitation: {
+        peakHour: tools.Hour.fromValue(peakHour).get(),
+        probability: tools.Int.nonNegative(peakProbability as number),
+      },
       generatedAt: this.deps.Clock.now(),
     };
   }
@@ -63,12 +77,12 @@ class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
 
 class WeatherProviderNoopAdapter implements Panel.Ports.WeatherProvider {
   constructor(
-    private readonly temperatureCelsius: tools.IntegerType,
+    private readonly weather: Omit<Panel.Ports.Weather, "generatedAt" | "location">,
     private readonly deps: Dependencies,
   ) {}
 
   async read(location: Panel.VO.PanelLocationType): Promise<Panel.Ports.Weather> {
-    return { location, temperatureCelsius: this.temperatureCelsius, generatedAt: this.deps.Clock.now() };
+    return { ...this.weather, location, generatedAt: this.deps.Clock.now() };
   }
 }
 
@@ -76,11 +90,16 @@ export async function createWeatherProvider(
   Env: EnvironmentResultType,
   deps: Dependencies,
 ): Promise<Panel.Ports.WeatherProvider> {
+  const weather = {
+    temperatureCelsius: tools.Int.of(15),
+    precipitation: { peakHour: tools.Hour.fromValue(15).get(), probability: tools.Int.nonNegative(70) },
+  };
+
   return {
     [bg.NodeEnvironmentEnum.local]: async () =>
       WeatherProviderOpenMeteoAdapter.build(Env.PANEL_LOCATION, new tools.RoundingToNearestStrategy(), deps),
-    [bg.NodeEnvironmentEnum.test]: () => new WeatherProviderNoopAdapter(tools.Int.of(15), deps),
-    [bg.NodeEnvironmentEnum.staging]: () => new WeatherProviderNoopAdapter(tools.Int.of(15), deps),
-    [bg.NodeEnvironmentEnum.production]: () => new WeatherProviderNoopAdapter(tools.Int.of(15), deps),
+    [bg.NodeEnvironmentEnum.test]: () => new WeatherProviderNoopAdapter(weather, deps),
+    [bg.NodeEnvironmentEnum.staging]: () => new WeatherProviderNoopAdapter(weather, deps),
+    [bg.NodeEnvironmentEnum.production]: () => new WeatherProviderNoopAdapter(weather, deps),
   }[Env.type]();
 }
