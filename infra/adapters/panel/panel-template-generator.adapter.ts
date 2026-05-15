@@ -2,7 +2,7 @@ import * as bg from "@bgord/bun";
 import type * as Panel from "+panel";
 import type { EnvironmentResultType } from "+infra/env";
 
-const template = /* HTML */ (weather: Panel.Ports.WeatherCurrent) => `
+const template = /* HTML */ (weather: Panel.Ports.Weather) => `
     <html>
       <head>
         <style>
@@ -23,9 +23,9 @@ const template = /* HTML */ (weather: Panel.Ports.WeatherCurrent) => `
   `;
 
 class PanelTemplateGeneratorAdapter implements Panel.Ports.PanelTemplateGenerator {
-  constructor(private readonly template: (weahter: Panel.Ports.WeatherCurrent) => string) {}
+  constructor(private readonly template: (weahter: Panel.Ports.Weather) => string) {}
 
-  async generate(weather: Panel.Ports.WeatherCurrent): Promise<string> {
+  async generate(weather: Panel.Ports.Weather): Promise<string> {
     return this.template(weather);
   }
 }

@@ -4,7 +4,7 @@ import * as v from "valibot";
 import * as Panel from "+panel";
 
 type Dependencies = {
-  WeatherCurrentReader: Panel.Ports.WeatherCurrentReader;
+  WeatherProvider: Panel.Ports.WeatherProvider;
   PanelTemplateGenerator: Panel.Ports.PanelTemplateGenerator;
   PanelImageGenerator: Panel.Ports.PanelImageGenerator;
   TemporaryFile: bg.TemporaryFilePort;
@@ -14,7 +14,7 @@ type Dependencies = {
 
 export const handleGeneratePanelCommand =
   (deps: Dependencies) => async (command: Panel.Commands.GeneratePanelCommandType) => {
-    const weather = await deps.WeatherCurrentReader.read(command.payload.location);
+    const weather = await deps.WeatherProvider.read(command.payload.location);
 
     const filename = tools.Filename.fromParts(
       v.parse(tools.Basename, command.createdAt.toString()),
