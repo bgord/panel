@@ -24,32 +24,34 @@ const template = /* HTML */ (weather: Panel.Ports.Weather, css: string) => `
           ${weather.generatedAt
             .toInstant()
             .toZonedDateTimeISO("Europe/Warsaw")
-            .toLocaleString("pl-PL", { day: "numeric", month: "long" })}
+            .toLocaleString("en", { day: "numeric", month: "long" })}
         </section>
 
         <section data-stack="y" data-cross="center" data-p="3">
-          <div data-fs="5xl" data-color="neutral-600" data-my="8">${weather.location}</div>
+          <div data-fs="5xl" data-color="neutral-500" data-my="5">${weather.location}</div>
 
-          <div data-stack="x" data-gap="12" data-cross="end">
-            <div data-stack="y">
+          <div data-fs="5xl" data-color="neutral-600" data-my="8">15:25</div>
+
+          <div data-stack="x" data-gap="12" >
+            <div data-stack="y" data-cross="center" data-main="between">
               <img src="${weather.conditionImageUrl}" alt="${weather.condition}" />
               <div data-fs="xl" data-color="neutral-400">${weather.condition}</div>
             </div>
 
-            <div data-color="neutral-900" data-mt="3" data-stack="y" data-cross="center"> 
+            <div data-color="neutral-900" data-stack="y" data-cross="center" data-main="between" data-mt="4">
               <div data-fs="5xl">${weather.temperatureCelsius} °C</div>
-              <div data-fs="xl">odczuw. ${weather.feelsLikeCelsius} °C</div>
+              <div data-fs="xl">feels like ${weather.feelsLikeCelsius} °C</div>
             </div>
           </div>
 
-          <div data-fs="xl" data-color="neutral-300" data-mt="8">${weather.precipitation.probability}% opadów (ok. ${weather.precipitation.hour}:00)</div>
+          <div data-fs="xl" data-color="neutral-300" data-mt="8">${weather.precipitation.probability}% precipitation (${weather.precipitation.hour}:00)</div>
         </section>
 
         <section data-color="neutral-400" data-m="8">
-          Wygenerowano ${weather.generatedAt
+          Generated at ${weather.generatedAt
             .toInstant()
             .toZonedDateTimeISO("Europe/Warsaw")
-            .toLocaleString("pl-PL", { dateStyle: "full", timeStyle: "short" })}
+            .toLocaleString("en", { dateStyle: "full", timeStyle: "short" })}
         </section>
       </body>
     </html>
