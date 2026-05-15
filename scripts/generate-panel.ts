@@ -14,7 +14,7 @@ import { registerCommandHandlers } from "+infra/register-command-handlers";
     for (const language of languages.values) {
       const command = bg.command(
         Panel.Commands.GeneratePanelCommand,
-        { payload: { location: di.Env.PANEL_LOCATION, language } },
+        { payload: { location: di.Env.PANEL_LOCATION, timezone: di.Env.PANEL_TIMEZONE, language } },
         di.Adapters.System,
       );
 
