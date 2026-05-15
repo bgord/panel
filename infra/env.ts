@@ -1,6 +1,7 @@
 import * as bg from "@bgord/bun";
 import * as tools from "@bgord/tools";
 import * as v from "valibot";
+import * as Panel from "+panel";
 
 export const EnvironmentSchema = v.object({
   PORT: bg.Port,
@@ -13,6 +14,7 @@ export const EnvironmentSchema = v.object({
   TZ: v.literal("UTC"),
   BASIC_AUTH_USERNAME: bg.BasicAuthUsername,
   BASIC_AUTH_PASSWORD: bg.BasicAuthPassword,
+  PANEL_LOCATION: Panel.VO.PanelLocation,
 });
 
 type EnvironmentType = v.InferOutput<typeof EnvironmentSchema>;
