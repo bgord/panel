@@ -3,6 +3,8 @@ import * as tools from "@bgord/tools";
 import type * as Panel from "+panel";
 import type { EnvironmentResultType } from "+infra/env";
 
+type Dependencies = { Clock: bg.ClockPort };
+
 type OpenMeteoCoordinates = { latitude: number; longitude: number };
 type OpenMeteoGeocodingResult = { results: Array<{ latitude: number; longitude: number }> };
 type OpenMeteoCurrentWeatherResult = { current: { temperature_2m: number } };
@@ -17,11 +19,13 @@ class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
   private constructor(
     private readonly coordinates: OpenMeteoCoordinates,
     private readonly rounding: tools.RoundingStrategy,
+    private readonly deps: Dependencies,
   ) {}
 
   static async build(
     location: Panel.VO.PanelLocationType,
     rounding: tools.RoundingStrategy,
+    deps: Dependencies,
   ): Promise<Panel.Ports.WeatherProvider> {
     const url = new URL("https://geocoding-api.open-meteo.com/v1/search");
     url.searchParams.set("name", location);
@@ -34,7 +38,7 @@ class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
     const coordinates = geocoding.results?.at(0);
     if (!coordinates) throw new Error(WeatherProviderOpenMeteoAdapterError.LocationNotFound);
 
-    return new WeatherProviderOpenMeteoAdapter(coordinates, rounding);
+    return new WeatherProviderOpenMeteoAdapter(coordinates, rounding, deps);
   }
 
   async read(location: Panel.VO.PanelLocationType): Promise<Panel.Ports.Weather> {
@@ -52,26 +56,31 @@ class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
     return {
       location,
       temperatureCelsius: tools.Int.of(this.rounding.round(weather.current.temperature_2m)),
+      generatedAt: this.deps.Clock.now(),
     };
   }
 }
 
 class WeatherProviderNoopAdapter implements Panel.Ports.WeatherProvider {
-  constructor(private readonly temperatureCelsius: tools.IntegerType) {}
+  constructor(
+    private readonly temperatureCelsius: tools.IntegerType,
+    private readonly deps: Dependencies,
+  ) {}
 
   async read(location: Panel.VO.PanelLocationType): Promise<Panel.Ports.Weather> {
-    return { location, temperatureCelsius: this.temperatureCelsius };
+    return { location, temperatureCelsius: this.temperatureCelsius, generatedAt: this.deps.Clock.now() };
   }
 }
 
 export async function createWeatherProvider(
   Env: EnvironmentResultType,
+  deps: Dependencies,
 ): Promise<Panel.Ports.WeatherProvider> {
   return {
     [bg.NodeEnvironmentEnum.local]: async () =>
-      WeatherProviderOpenMeteoAdapter.build(Env.PANEL_LOCATION, new tools.RoundingToNearestStrategy()),
-    [bg.NodeEnvironmentEnum.test]: () => new WeatherProviderNoopAdapter(tools.Int.of(15)),
-    [bg.NodeEnvironmentEnum.staging]: () => new WeatherProviderNoopAdapter(tools.Int.of(15)),
-    [bg.NodeEnvironmentEnum.production]: () => new WeatherProviderNoopAdapter(tools.Int.of(15)),
+      WeatherProviderOpenMeteoAdapter.build(Env.PANEL_LOCATION, new tools.RoundingToNearestStrategy(), deps),
+    [bg.NodeEnvironmentEnum.test]: () => new WeatherProviderNoopAdapter(tools.Int.of(15), deps),
+    [bg.NodeEnvironmentEnum.staging]: () => new WeatherProviderNoopAdapter(tools.Int.of(15), deps),
+    [bg.NodeEnvironmentEnum.production]: () => new WeatherProviderNoopAdapter(tools.Int.of(15), deps),
   }[Env.type]();
 }

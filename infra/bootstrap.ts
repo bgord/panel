@@ -9,7 +9,7 @@ export async function bootstrap() {
   const Env = await EnvironmentLoader.load();
 
   const System = await createSystemAdapters(Env);
-  const Panel = await createPanelAdapters(Env);
+  const Panel = await createPanelAdapters(Env, System);
   const Tools = await createTools(Env, System);
 
   const { JobQueue, JobQueueStatsProvider, JobPruner } = await createJobQueue(Env, { ...System, ...Tools });

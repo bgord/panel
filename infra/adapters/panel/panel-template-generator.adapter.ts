@@ -14,9 +14,16 @@ const template = /* HTML */ (weather: Panel.Ports.Weather) => `
       <body>
         <h1>Panel</h1>
         <section>
-          <h2>Weather</h2>
+          <h2>Pogoda</h2>
           <div>${weather.temperatureCelsius} °C</div>
           <small>${weather.location}</small>
+        </section>
+
+        <section>
+          Wygenerowano ${weather.generatedAt
+            .toInstant()
+            .toZonedDateTimeISO("Europe/Warsaw")
+            .toLocaleString("pl-PL", { dateStyle: "full", timeStyle: "short" })}
         </section>
       </body>
     </html>
