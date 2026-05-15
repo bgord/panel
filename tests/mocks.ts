@@ -1,7 +1,10 @@
 // cspell:disable
+
 import { expect } from "bun:test";
 import * as bg from "@bgord/bun";
 import * as tools from "@bgord/tools";
+import * as v from "valibot";
+import * as Panel from "+panel";
 
 // IDs
 export const correlationId = "00000000-0000-0000-0000-000000000000";
@@ -30,15 +33,8 @@ export const head = {
 };
 export const stream = () => new ReadableStream({ start: (controller) => controller.close() });
 
-export const GenericHourHasPassedEvent = {
-  id: expectAnyId,
-  correlationId,
-  createdAt: T0.ms,
-  stream: "passage_of_time",
-  version: 1,
-  name: "HOUR_HAS_PASSED_EVENT",
-  payload: { timestamp: hourHasPassedTimestamp.ms },
-} satisfies bg.System.Events.HourHasPassedEventType;
+// Panel
+export const location = v.parse(Panel.VO.PanelLocation, "Warsaw");
 
 export const IntentionalError = "intentional.error" as const;
 export const throwIntentionalError = () => {
@@ -47,3 +43,12 @@ export const throwIntentionalError = () => {
 export const throwIntentionalErrorAsync = async () => {
   throw new Error(IntentionalError);
 };
+
+export const GenericGeneratePanelJob = {
+  id: expectAnyId,
+  correlationId: correlationId,
+  createdAt: T0.ms,
+  name: Panel.Jobs.GENERATE_PANEL_JOB,
+  revision: 0,
+  payload: { location },
+} satisfies Panel.Jobs.GeneratePanelJobType;
