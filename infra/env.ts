@@ -15,6 +15,7 @@ export const EnvironmentSchema = v.object({
   BASIC_AUTH_USERNAME: bg.BasicAuthUsername,
   BASIC_AUTH_PASSWORD: bg.BasicAuthPassword,
   PANEL_LOCATION: Panel.VO.PanelLocation,
+  PANEL_TIMEZONE: tools.Timezone,
 });
 
 type EnvironmentType = v.InferOutput<typeof EnvironmentSchema>;
