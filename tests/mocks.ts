@@ -35,6 +35,7 @@ export const stream = () => new ReadableStream({ start: (controller) => controll
 
 // Panel
 export const location = v.parse(Panel.VO.PanelLocation, "Warsaw");
+export const objectKey = v.parse(tools.ObjectKey, "panels/panel.png");
 
 export const IntentionalError = "intentional.error" as const;
 export const throwIntentionalError = () => {
