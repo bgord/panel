@@ -18,8 +18,8 @@ export const EnvironmentSchema = v.object({
 type EnvironmentType = v.InferOutput<typeof EnvironmentSchema>;
 export type EnvironmentResultType = bg.EnvironmentResultType<EnvironmentType>;
 
-export const MasterKeyPath = tools.FilePathAbsolute.fromString("/etc/bgord/showcase/master.key");
-export const SecretsPath = tools.FilePathAbsolute.fromString("/var/www/showcase/secrets.enc");
+export const MasterKeyPath = tools.FilePathAbsolute.fromString("/etc/bgord/panel/master.key");
+export const SecretsPath = tools.FilePathAbsolute.fromString("/var/www/panel/secrets.enc");
 
 export async function createEnvironmentLoader(): Promise<bg.EnvironmentLoaderPort<EnvironmentType>> {
   const type = v.parse(v.enum(bg.NodeEnvironmentEnum), process.env.NODE_ENV);

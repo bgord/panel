@@ -5,7 +5,7 @@ import type { EnvironmentResultType } from "+infra/env";
 type Dependencies = { Clock: bg.ClockPort };
 
 export function createLogger(Env: EnvironmentResultType, deps: Dependencies) {
-  const app = "showcase";
+  const app = "panel";
 
   const redactor = new bg.RedactorComposite([
     new bg.RedactorMetadataCompactArray({ maxItems: tools.Int.positive(3) }),
