@@ -2,15 +2,18 @@ import * as bg from "@bgord/bun";
 import * as tools from "@bgord/tools";
 import type * as Panel from "+panel";
 import type { EnvironmentResultType } from "+infra/env";
+import WMO from "./wmo-codes.json" with { type: "json" };
 
 type Dependencies = { Clock: bg.ClockPort };
 
 type OpenMeteoCoordinates = { latitude: number; longitude: number };
 type OpenMeteoGeocodingResult = { results: Array<OpenMeteoCoordinates> };
 type OpenMeteoCurrentWeatherResult = {
-  current: { temperature_2m: number; apparent_temperature: number };
+  current: { temperature_2m: number; apparent_temperature: number; weather_code: number };
   hourly: { precipitation_probability: Array<number> };
 };
+
+type WmoDescriptions = Record<string, { day: { description: string; image: string } }>;
 
 const WeatherProviderOpenMeteoAdapterError = {
   GeocodingFailed: "weather.provider.open.meteo.adapter.geocoding.failed",
@@ -50,7 +53,7 @@ class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
     url.searchParams.set("longitude", this.coordinates.longitude.toString());
     url.searchParams.set("hourly", "precipitation_probability");
     url.searchParams.set("forecast_days", "1");
-    url.searchParams.set("current", "temperature_2m,apparent_temperature");
+    url.searchParams.set("current", "temperature_2m,apparent_temperature,weather_code");
     url.searchParams.set("timezone", "Europe/Warsaw");
 
     const response = await fetch(url);
@@ -59,18 +62,21 @@ class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
     const weather = (await response.json()) as OpenMeteoCurrentWeatherResult;
 
     const hourlyProbabilities = weather.hourly.precipitation_probability;
+    const hour = hourlyProbabilities.indexOf(Math.max(...hourlyProbabilities));
+    const probability = hourlyProbabilities[hour];
 
-    const peakHour = hourlyProbabilities.indexOf(Math.max(...hourlyProbabilities));
-    const peakProbability = hourlyProbabilities[peakHour];
+    const condition = (WMO as WmoDescriptions)[String(weather.current.weather_code)]?.day;
 
     return {
       location,
       temperatureCelsius: tools.Int.of(this.rounding.round(weather.current.temperature_2m)),
       feelsLikeCelsius: tools.Int.of(this.rounding.round(weather.current.apparent_temperature)),
       precipitation: {
-        peakHour: tools.Hour.fromValue(peakHour).get(),
-        probability: tools.Int.nonNegative(peakProbability as number),
+        hour: tools.Hour.fromValue(hour).get(),
+        probability: tools.Int.nonNegative(probability as number),
       },
+      condition: condition?.description ?? "nieznane",
+      conditionImageUrl: condition?.image ?? "",
       generatedAt: this.deps.Clock.now(),
     };
   }
@@ -96,7 +102,7 @@ export async function createWeatherProvider(
     feelsLikeCelsius: tools.Int.of(14),
     condition: "sunny",
     conditionImageUrl: "http://openweathermap.org/img/wn/01d@2x.png",
-    precipitation: { peakHour: tools.Hour.fromValue(15).get(), probability: tools.Int.nonNegative(70) },
+    precipitation: { hour: tools.Hour.fromValue(15).get(), probability: tools.Int.nonNegative(70) },
   };
 
   return {

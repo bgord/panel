@@ -25,7 +25,7 @@ const template = /* HTML */ (weather: Panel.Ports.Weather) => `
           <div>${weather.temperatureCelsius} °C [${weather.feelsLikeCelsius} °C]</div>
           <small>${weather.location}</small>
 
-          <div>${weather.precipitation.probability}% opadów (ok. ${weather.precipitation.peakHour}:00)</div>
+          <div>${weather.precipitation.probability}% opadów (ok. ${weather.precipitation.hour}:00)</div>
         </section>
 
         <section>
