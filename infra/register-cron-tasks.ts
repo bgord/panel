@@ -28,4 +28,16 @@ export function registerCronTasks({ Env, Tools, Adapters }: BootstrapType) {
     ),
   );
   Tools.CronScheduler.schedule(JobQueueWorker);
+
+  const JobPrunerWorker = CronTaskHandler.handle(
+    bg.JobPrunerWorker(
+      {
+        label: "Job pruner worker",
+        cron: bg.CronExpressionSchedules.EVERY_MINUTE,
+        olderThan: tools.Duration.Days(1),
+      },
+      { ...Tools },
+    ),
+  );
+  Tools.CronScheduler.schedule(JobPrunerWorker);
 }
