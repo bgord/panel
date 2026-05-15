@@ -31,5 +31,8 @@ export const handleGeneratePanelCommand =
     const temporary = await deps.TemporaryFile.write(filename, image);
 
     await deps.ImageGrayscale.grayscale({ strategy: "in_place", input: temporary });
-    await deps.RemoteFileStorage.putFromPath({ path: temporary, key: Panel.VO.PanelKeyFactory.stable() });
+    await deps.RemoteFileStorage.putFromPath({
+      path: temporary,
+      key: Panel.VO.PanelKeyFactory.stable(command.payload.language),
+    });
   };

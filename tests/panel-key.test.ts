@@ -4,7 +4,7 @@ import * as v from "valibot";
 import * as Panel from "+panel";
 
 describe("PanelKeyFactory", () => {
-  test("happy path", () => {
-    expect(Panel.VO.PanelKeyFactory.stable()).toEqual(v.parse(tools.ObjectKey, "panels/panel.png"));
+  test("en", () => {
+    expect(Panel.VO.PanelKeyFactory.stable("en")).toEqual(v.parse(tools.ObjectKey, "panels/panel-en.png"));
   });
 });

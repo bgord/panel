@@ -35,7 +35,7 @@ export const stream = () => new ReadableStream({ start: (controller) => controll
 
 // Panel
 export const location = v.parse(Panel.VO.PanelLocation, "Warsaw");
-export const objectKey = v.parse(tools.ObjectKey, "panels/panel.png");
+export const objectKey = v.parse(tools.ObjectKey, "panels/panel-en.png");
 export const weather: Panel.Ports.Weather = {
   location,
   temperatureCelsius: tools.Int.of(15),
