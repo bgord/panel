@@ -3,7 +3,7 @@ import type * as Panel from "+panel";
 
 export type WeatherCurrent = {
   location: Panel.VO.PanelLocationType;
-  temperature_celsius: tools.IntegerType;
+  temperatureCelsius: tools.IntegerType;
 };
 
 export interface WeatherCurrentReader {
