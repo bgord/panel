@@ -1,10 +1,11 @@
 import * as bg from "@bgord/bun";
+import type * as tools from "@bgord/tools";
 import { languages } from "+languages";
 import * as Panel from "+panel";
 
 type AcceptedJob = Panel.Jobs.GeneratePanelJobType;
 
-type Config = { location: Panel.VO.PanelLocationType };
+type Config = { location: Panel.VO.PanelLocationType; timezone: tools.TimezoneType };
 type Dependencies = {
   IdProvider: bg.IdProviderPort;
   Clock: bg.ClockPort;
@@ -19,11 +20,7 @@ export class GeneratePanelScheduler {
 
   async handle() {
     for (const language of languages.values) {
-      const job = bg.job(
-        Panel.Jobs.GeneratePanelJobSchema,
-        { location: this.config.location, language },
-        this.deps,
-      );
+      const job = bg.job(Panel.Jobs.GeneratePanelJobSchema, { ...this.config, language }, this.deps);
 
       await this.deps.JobQueue.enqueue(job);
     }

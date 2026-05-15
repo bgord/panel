@@ -35,6 +35,7 @@ export const stream = () => new ReadableStream({ start: (controller) => controll
 
 // Panel
 export const location = v.parse(Panel.VO.PanelLocation, "Warsaw");
+export const timezone = v.parse(tools.Timezone, "Europe/Warsaw");
 export const objectKey = v.parse(tools.ObjectKey, "panels/panel-en.png");
 export const weather: Panel.Ports.Weather = {
   location,
@@ -63,5 +64,5 @@ export const GenericGeneratePanelJob = {
   createdAt: T0.ms,
   name: Panel.Jobs.GENERATE_PANEL_JOB,
   revision: 0,
-  payload: { location, language: "en" },
+  payload: { location, timezone, language: "en" },
 } satisfies Panel.Jobs.GeneratePanelJobType;

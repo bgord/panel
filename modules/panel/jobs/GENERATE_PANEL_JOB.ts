@@ -9,7 +9,7 @@ export const GENERATE_PANEL_JOB = "GENERATE_PANEL_JOB";
 export const GeneratePanelJobSchema = v.object({
   ...bg.JobEnvelopeSchema,
   name: v.literal(GENERATE_PANEL_JOB),
-  payload: v.object({ location: Panel.VO.PanelLocation, language: tools.Language }),
+  payload: v.object({ location: Panel.VO.PanelLocation, timezone: tools.Timezone, language: tools.Language }),
 });
 
 export type GeneratePanelJobType = v.InferOutput<typeof GeneratePanelJobSchema>;

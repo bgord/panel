@@ -11,7 +11,7 @@ export function registerCronTasks({ Env, Tools, Adapters }: BootstrapType) {
     cron: bg.CronExpressionSchedules.EVERY_MINUTE,
     handler: () =>
       new Panel.Services.GeneratePanelScheduler(
-        { location: Env.PANEL_LOCATION },
+        { location: Env.PANEL_LOCATION, timezone: Env.PANEL_TIMEZONE },
         { ...Tools, ...Adapters.System },
       ).handle(),
   });

@@ -8,7 +8,7 @@ describe("GeneratePanelScheduler", async () => {
   const di = await bootstrap();
 
   const scheduler = new Panel.Services.GeneratePanelScheduler(
-    { location: di.Env.PANEL_LOCATION },
+    { location: di.Env.PANEL_LOCATION, timezone: di.Env.PANEL_TIMEZONE },
     { ...di.Tools, ...di.Adapters.System },
   );
 
