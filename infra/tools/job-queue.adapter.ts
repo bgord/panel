@@ -3,7 +3,13 @@ import * as tools from "@bgord/tools";
 import * as Panel from "+panel";
 import type { EnvironmentResultType } from "+infra/env";
 
-type Dependencies = { Clock: bg.ClockPort };
+type AcceptedCommand = Panel.Commands.GeneratePanelCommandType;
+
+type Dependencies = {
+  IdProvider: bg.IdProviderPort;
+  CommandBus: bg.CommandBusPort<AcceptedCommand>;
+  Clock: bg.ClockPort;
+};
 
 type AcceptedJob = Panel.Jobs.SchedulePanelJobType;
 
@@ -24,7 +30,7 @@ export async function createJobQueue(
         new bg.JobRetryPolicyLimitStrategy(tools.Int.nonNegative(3)),
         new bg.JobRetryPolicyBackoffStrategy(new bg.RetryBackoffLinearStrategy(tools.Duration.Minutes(1))),
       ]),
-      handler: async () => {},
+      handler: Panel.JobHandlers.SchedulePanelJobHandler(deps),
     },
   });
 

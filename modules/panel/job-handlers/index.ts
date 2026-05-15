@@ -1,1 +1,1 @@
-export * from "./generate-panel-job.handler";
+export * from "./schedule-panel-job.handler";

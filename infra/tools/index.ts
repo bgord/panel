@@ -5,7 +5,6 @@ import { createCacheResponse } from "./cache-response";
 import { createCommandBus } from "./command-bus";
 import { createCronScheduler } from "./cron-scheduler.adapter";
 import { HashContent } from "./hash-content.strategy";
-import { createJobQueue } from "./job-queue.adapter";
 import { createPrerequisites } from "./prerequisites";
 import { createShieldBasicAuth } from "./shield-basic-auth.strategy";
 import { createShieldRateLimit } from "./shield-rate-limit.strategy";
@@ -28,7 +27,6 @@ type Dependencies = {
 };
 
 export async function createTools(Env: EnvironmentResultType, deps: Dependencies) {
-  const { JobQueue, JobQueueStatsProvider, JobPruner } = await createJobQueue(Env, deps);
   const CronScheduler = await createCronScheduler(Env, deps);
 
   return {
@@ -42,8 +40,5 @@ export async function createTools(Env: EnvironmentResultType, deps: Dependencies
     ShieldSecurity: createShieldSecurity(Env, { ...deps, HashContent }),
     BuildInfoConfig: createBuildInfoConfig(Env, deps),
     HashContent,
-    JobQueue,
-    JobQueueStatsProvider,
-    JobPruner,
   };
 }
