@@ -1,10 +1,11 @@
 import * as bg from "@bgord/bun";
 import * as tools from "@bgord/tools";
+import * as Panel from "+panel";
 import type { EnvironmentResultType } from "+infra/env";
 
 type Dependencies = { Clock: bg.ClockPort };
 
-type AcceptedJob = bg.System.Jobs.SendEmailJobType;
+type AcceptedJob = Panel.Jobs.GeneratePanelJobType;
 
 export async function createJobQueue(
   Env: EnvironmentResultType,
@@ -17,9 +18,8 @@ export async function createJobQueue(
   const store = new bg.JobQueueSqliteStore({ database: "jobs.db" });
 
   const registry = new bg.JobRegistryAdapter<AcceptedJob>({
-    // TODO
-    [bg.System.Jobs.SEND_EMAIL_JOB]: {
-      schema: bg.System.Jobs.SendEmailJobSchema,
+    [Panel.Jobs.GENERATE_PANEL_JOB]: {
+      schema: Panel.Jobs.GeneratePanelJobSchema,
       retry: new bg.JobRetryPolicyCompositeStrategy([
         new bg.JobRetryPolicyLimitStrategy(tools.Int.nonNegative(3)),
         new bg.JobRetryPolicyBackoffStrategy(new bg.RetryBackoffLinearStrategy(tools.Duration.Minutes(1))),
