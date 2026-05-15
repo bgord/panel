@@ -44,7 +44,10 @@ export class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvi
     return new WeatherProviderOpenMeteoAdapter(coordinates, rounding, deps);
   }
 
-  async read(location: Panel.VO.PanelLocationType): Promise<Panel.Ports.Weather> {
+  async read(
+    language: tools.LanguageType,
+    location: Panel.VO.PanelLocationType,
+  ): Promise<Panel.Ports.Weather> {
     const url = new URL("https://api.open-meteo.com/v1/forecast");
     url.searchParams.set("latitude", this.coordinates.latitude.toString());
     url.searchParams.set("longitude", this.coordinates.longitude.toString());
@@ -52,6 +55,7 @@ export class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvi
     url.searchParams.set("forecast_days", "1");
     url.searchParams.set("current", "temperature_2m,apparent_temperature,weather_code");
     url.searchParams.set("timezone", "Europe/Warsaw");
+    url.searchParams.set("language", language);
 
     const response = await fetch(url);
     if (!response.ok) throw new Error(WeatherProviderOpenMeteoAdapterError.WeatherFailed);

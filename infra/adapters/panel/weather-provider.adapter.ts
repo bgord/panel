@@ -12,7 +12,10 @@ class WeatherProviderNoopAdapter implements Panel.Ports.WeatherProvider {
     private readonly deps: Dependencies,
   ) {}
 
-  async read(location: Panel.VO.PanelLocationType): Promise<Panel.Ports.Weather> {
+  async read(
+    _language: tools.LanguageType,
+    location: Panel.VO.PanelLocationType,
+  ): Promise<Panel.Ports.Weather> {
     return { ...this.weather, location, generatedAt: this.deps.Clock.now() };
   }
 }

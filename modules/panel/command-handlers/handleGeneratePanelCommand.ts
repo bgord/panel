@@ -14,7 +14,7 @@ type Dependencies = {
 
 export const handleGeneratePanelCommand =
   (deps: Dependencies) => async (command: Panel.Commands.GeneratePanelCommandType) => {
-    const weather = await deps.WeatherProvider.read(command.payload.location);
+    const weather = await deps.WeatherProvider.read(command.payload.language, command.payload.location);
 
     const filename = tools.Filename.fromParts(
       v.parse(tools.Basename, command.createdAt.toString()),
