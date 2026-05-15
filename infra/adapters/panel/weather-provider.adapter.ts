@@ -94,6 +94,8 @@ export async function createWeatherProvider(
   const weather = {
     temperatureCelsius: tools.Int.of(15),
     feelsLikeCelsius: tools.Int.of(14),
+    condition: "sunny",
+    conditionImageUrl: "http://openweathermap.org/img/wn/01d@2x.png",
     precipitation: { peakHour: tools.Hour.fromValue(15).get(), probability: tools.Int.nonNegative(70) },
   };
 

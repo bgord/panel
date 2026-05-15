@@ -15,6 +15,8 @@ const template = /* HTML */ (weather: Panel.Ports.Weather) => `
         <h1>Panel</h1>
         <section>
           <h2>Pogoda</h2>
+          <div>${weather.condition}</div>
+          <img src="${weather.conditionImageUrl}" alt="${weather.condition}" />
           <strong>${weather.generatedAt
             .toInstant()
             .toZonedDateTimeISO("Europe/Warsaw")
