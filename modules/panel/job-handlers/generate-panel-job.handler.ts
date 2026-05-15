@@ -9,9 +9,9 @@ type Dependencies = {
   CommandBus: bg.CommandBusPort<AcceptedCommand>;
 };
 
-export const SchedulePanelJobHandler =
+export const GeneratePanelJobHandler =
   (deps: Dependencies) =>
-  async (job: Panel.Jobs.SchedulePanelJobType): Promise<void> => {
+  async (job: Panel.Jobs.GeneratePanelJobType): Promise<void> => {
     const command = bg.command(
       Panel.Commands.GeneratePanelCommand,
       { payload: { location: job.payload.location } },

@@ -11,7 +11,7 @@ type Dependencies = {
   Clock: bg.ClockPort;
 };
 
-type AcceptedJob = Panel.Jobs.SchedulePanelJobType;
+type AcceptedJob = Panel.Jobs.GeneratePanelJobType;
 
 export async function createJobQueue(
   Env: EnvironmentResultType,
@@ -24,13 +24,13 @@ export async function createJobQueue(
   const store = new bg.JobQueueSqliteStore({ database: "jobs.db" });
 
   const registry = new bg.JobRegistryAdapter<AcceptedJob>({
-    [Panel.Jobs.SCHEDULE_PANEL_JOB]: {
-      schema: Panel.Jobs.SchedulePanelJobSchema,
+    [Panel.Jobs.GENERATE_PANEL_JOB]: {
+      schema: Panel.Jobs.GeneratePanelJobSchema,
       retry: new bg.JobRetryPolicyCompositeStrategy([
         new bg.JobRetryPolicyLimitStrategy(tools.Int.nonNegative(3)),
         new bg.JobRetryPolicyBackoffStrategy(new bg.RetryBackoffLinearStrategy(tools.Duration.Minutes(1))),
       ]),
-      handler: Panel.JobHandlers.SchedulePanelJobHandler(deps),
+      handler: Panel.JobHandlers.GeneratePanelJobHandler(deps),
     },
   });
 

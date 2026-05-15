@@ -1,1 +1,1 @@
-export * from "./SCHEDULE_PANEL_JOB";
+export * from "./GENERATE_PANEL_JOB";
