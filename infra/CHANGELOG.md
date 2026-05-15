@@ -1,10 +1,18 @@
 # Changelog
+- 2026-05-15 12:33 7cc663b **refactor: rename generate**
+## 2026-05-15 12:33 
+- 2026-05-15 12:30 6827902 **step: add job queue handler**
+- 2026-05-15 12:20 f474ae9 **step: add schedule panel job handler**
+- 2026-05-15 12:16 fb64dca **step: add schedule panel job**
+- 2026-05-15 12:06 b6b1ca3 **step: add generate panel job**
+- 2026-05-15 12:05 8ee2326 **step: add panel image generator adapter**
+- 2026-05-15 11:58 f49b9b2 **step: pass filename to panel image generator**
 - 2026-05-15 11:32 56c6103 **step: setup image grayscale adapter**
-## 2026-05-15 11:32 
 - 2026-05-15 11:28 0dd8519 **step: setup weather current reader adapter**
 - 2026-05-15 11:21 bee0400 **step: bump bgord/scripts**
 - 2026-05-15 11:18 a82567a **step: update project names**
 - 2026-05-15 11:17 1d239ba **step: add handleGeneratePanelCommand**
+- 2026-05-15 09:32 3b2237f **docs: generate CHANGELOG**
 - 2026-05-13 22:07 d7cd4ac **step: update image adapters**
 - 2026-05-13 22:07 3c32ddf **step: update packages**
 - 2026-05-13 15:04 7b89c75 **step: update workflows**
