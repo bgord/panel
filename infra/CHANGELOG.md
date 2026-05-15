@@ -1,6 +1,12 @@
 # Changelog
+- 2026-05-15 20:19 e88d871 **step: include timezone in template generator**
+- 2026-05-15 20:19 84bbd46 **step: include timezone in weather provider**
+## 2026-05-15 20:19 
+- 2026-05-15 20:17 2801096 **step: add timezone to generate panel job**
+- 2026-05-15 20:16 10460a5 **step: add timezone to generate panel command**
+- 2026-05-15 20:13 85bf47e **step: add panel timezone env**
+- 2026-05-15 20:02 3599b64 **step: update precipitation**
 - 2026-05-15 19:53 ede0e37 **step: update workflows**
-## 2026-05-15 19:53 
 - 2026-05-15 19:52 be8ef53 **step: create panel template service**
 - 2026-05-15 19:45 6ee7532 **refactor: adjust image generator config**
 - 2026-05-15 19:44 219a210 **step: update packages**
@@ -13,6 +19,7 @@
 - 2026-05-15 18:22 18b6587 **step: add language to generate panel command**
 - 2026-05-15 18:09 abc16c6 **step: test template**
 - 2026-05-15 17:59 0e2d0bd **step: update template**
+- 2026-05-15 17:54 549347a **docs: generate CHANGELOG**
 - 2026-05-15 17:51 10b3575 **step: add job handler test**
 - 2026-05-15 17:40 e4c0339 **step: test generate panel scheduler**
 - 2026-05-15 17:40 8e818a7 **step: add job pruner worker**
