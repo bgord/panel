@@ -4,6 +4,7 @@ import type * as Panel from "+panel";
 export type Weather = {
   location: Panel.VO.PanelLocationType;
   temperatureCelsius: tools.IntegerType;
+  feelsLikeCelsius: tools.IntegerType;
   precipitation: { probability: tools.IntegerNonNegativeType; peakHour: tools.HourValueType };
   generatedAt: tools.Timestamp;
 };

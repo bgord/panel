@@ -8,7 +8,7 @@ type Dependencies = { Clock: bg.ClockPort };
 type OpenMeteoCoordinates = { latitude: number; longitude: number };
 type OpenMeteoGeocodingResult = { results: Array<OpenMeteoCoordinates> };
 type OpenMeteoCurrentWeatherResult = {
-  current: { temperature_2m: number };
+  current: { temperature_2m: number; apparent_temperature: number };
   hourly: { precipitation_probability: Array<number> };
 };
 
@@ -50,7 +50,7 @@ class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
     url.searchParams.set("longitude", this.coordinates.longitude.toString());
     url.searchParams.set("hourly", "precipitation_probability");
     url.searchParams.set("forecast_days", "1");
-    url.searchParams.set("current", "temperature_2m");
+    url.searchParams.set("current", "temperature_2m,apparent_temperature");
     url.searchParams.set("timezone", "Europe/Warsaw");
 
     const response = await fetch(url);
@@ -66,6 +66,7 @@ class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
     return {
       location,
       temperatureCelsius: tools.Int.of(this.rounding.round(weather.current.temperature_2m)),
+      feelsLikeCelsius: tools.Int.of(this.rounding.round(weather.current.apparent_temperature)),
       precipitation: {
         peakHour: tools.Hour.fromValue(peakHour).get(),
         probability: tools.Int.nonNegative(peakProbability as number),
@@ -92,6 +93,7 @@ export async function createWeatherProvider(
 ): Promise<Panel.Ports.WeatherProvider> {
   const weather = {
     temperatureCelsius: tools.Int.of(15),
+    feelsLikeCelsius: tools.Int.of(14),
     precipitation: { peakHour: tools.Hour.fromValue(15).get(), probability: tools.Int.nonNegative(70) },
   };
 

@@ -20,7 +20,7 @@ const template = /* HTML */ (weather: Panel.Ports.Weather) => `
             .toZonedDateTimeISO("Europe/Warsaw")
             .toLocaleString("pl-PL", { day: "numeric", month: "long" })}
           </strong>
-          <div>${weather.temperatureCelsius} °C</div>
+          <div>${weather.temperatureCelsius} °C [${weather.feelsLikeCelsius} °C]</div>
           <small>${weather.location}</small>
 
           <div>${weather.precipitation.probability}% opadów (ok. ${weather.precipitation.peakHour}:00)</div>
