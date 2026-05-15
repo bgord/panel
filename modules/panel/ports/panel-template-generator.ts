@@ -1,5 +1,6 @@
+import type * as tools from "@bgord/tools";
 import type * as Panel from "+panel";
 
 export interface PanelTemplateGenerator {
-  generate(weather: Panel.Ports.Weather): Promise<string>;
+  generate(language: tools.LanguageType, weather: Panel.Ports.Weather): Promise<string>;
 }

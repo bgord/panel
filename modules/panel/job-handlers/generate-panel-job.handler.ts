@@ -12,11 +12,7 @@ type Dependencies = {
 export const GeneratePanelJobHandler =
   (deps: Dependencies) =>
   async (job: Panel.Jobs.GeneratePanelJobType): Promise<void> => {
-    const command = bg.command(
-      Panel.Commands.GeneratePanelCommand,
-      { payload: { location: job.payload.location } },
-      deps,
-    );
+    const command = bg.command(Panel.Commands.GeneratePanelCommand, { payload: job.payload }, deps);
 
     await deps.CommandBus.emit(command);
   };

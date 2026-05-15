@@ -60,5 +60,5 @@ export const GenericGeneratePanelJob = {
   createdAt: T0.ms,
   name: Panel.Jobs.GENERATE_PANEL_JOB,
   revision: 0,
-  payload: { location },
+  payload: { location, language: "en" },
 } satisfies Panel.Jobs.GeneratePanelJobType;

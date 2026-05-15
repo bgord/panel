@@ -5,9 +5,11 @@ import {
 } from "+infra/adapters/panel/panel-template-generator.adapter";
 import * as mocks from "./mocks";
 
+const css = "";
+
 describe("PanelTemplateGeneratorAdapter", async () => {
-  test("happy path", async () => {
-    const result = await new PanelTemplateGeneratorAdapter(template, "").generate(mocks.weather);
+  test("en", async () => {
+    const result = await new PanelTemplateGeneratorAdapter(template, css).generate("en", mocks.weather);
 
     expect(result).toInclude(mocks.location);
     expect(result).toInclude("January 1");

@@ -5,8 +5,12 @@ import type { EnvironmentResultType } from "+infra/env";
 
 type Dependencies = { FileReaderText: bg.FileReaderTextPort };
 
-export const template = /* HTML */ (weather: Panel.Ports.Weather, css: string) => `
-    <html>
+export const template = /* HTML */ (
+  language: tools.LanguageType,
+  weather: Panel.Ports.Weather,
+  css: string,
+) => `
+    <html lang="${language}">
       <head>
         <meta charset="utf-8"  />
         <meta name="viewport" content="width=device-width, initial-scale=1"  />
@@ -24,7 +28,7 @@ export const template = /* HTML */ (weather: Panel.Ports.Weather, css: string) =
           ${weather.generatedAt
             .toInstant()
             .toZonedDateTimeISO("Europe/Warsaw")
-            .toLocaleString("en", { day: "numeric", month: "long" })}
+            .toLocaleString(language, { day: "numeric", month: "long" })}
         </section>
 
         <section data-stack="y" data-cross="center" data-p="3">
@@ -49,7 +53,7 @@ export const template = /* HTML */ (weather: Panel.Ports.Weather, css: string) =
           Generated at ${weather.generatedAt
             .toInstant()
             .toZonedDateTimeISO("Europe/Warsaw")
-            .toLocaleString("en", { dateStyle: "full", timeStyle: "short" })}
+            .toLocaleString(language, { dateStyle: "full", timeStyle: "short" })}
         </section>
       </body>
     </html>
@@ -57,12 +61,16 @@ export const template = /* HTML */ (weather: Panel.Ports.Weather, css: string) =
 
 export class PanelTemplateGeneratorAdapter implements Panel.Ports.PanelTemplateGenerator {
   constructor(
-    private readonly template: (weahter: Panel.Ports.Weather, css: string) => string,
+    private readonly template: (
+      language: tools.LanguageType,
+      weahter: Panel.Ports.Weather,
+      css: string,
+    ) => string,
     private readonly css: string,
   ) {}
 
-  async generate(weather: Panel.Ports.Weather): Promise<string> {
-    return this.template(weather, this.css);
+  async generate(language: tools.LanguageType, weather: Panel.Ports.Weather): Promise<string> {
+    return this.template(language, weather, this.css);
   }
 }
 

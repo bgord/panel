@@ -1,4 +1,5 @@
 import * as bg from "@bgord/bun";
+import { languages } from "+languages";
 import * as Panel from "+panel";
 
 type AcceptedJob = Panel.Jobs.GeneratePanelJobType;
@@ -17,8 +18,14 @@ export class GeneratePanelScheduler {
   ) {}
 
   async handle() {
-    const job = bg.job(Panel.Jobs.GeneratePanelJobSchema, { location: this.config.location }, this.deps);
+    for (const language of languages.values) {
+      const job = bg.job(
+        Panel.Jobs.GeneratePanelJobSchema,
+        { location: this.config.location, language },
+        this.deps,
+      );
 
-    await this.deps.JobQueue.enqueue(job);
+      await this.deps.JobQueue.enqueue(job);
+    }
   }
 }
