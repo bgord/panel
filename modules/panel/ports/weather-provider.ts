@@ -15,5 +15,9 @@ export type Weather = {
 };
 
 export interface WeatherProvider {
-  read(language: tools.LanguageType, location: Panel.VO.PanelLocationType): Promise<Weather>;
+  read(
+    language: tools.LanguageType,
+    timezone: tools.TimezoneType,
+    location: Panel.VO.PanelLocationType,
+  ): Promise<Weather>;
 }

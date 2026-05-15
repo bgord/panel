@@ -14,6 +14,7 @@ class WeatherProviderNoopAdapter implements Panel.Ports.WeatherProvider {
 
   async read(
     _language: tools.LanguageType,
+    _timezone: tools.TimezoneType,
     location: Panel.VO.PanelLocationType,
   ): Promise<Panel.Ports.Weather> {
     return { ...this.weather, location, generatedAt: this.deps.Clock.now() };

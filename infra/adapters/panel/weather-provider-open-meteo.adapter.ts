@@ -46,6 +46,7 @@ export class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvi
 
   async read(
     language: tools.LanguageType,
+    timezone: tools.TimezoneType,
     location: Panel.VO.PanelLocationType,
   ): Promise<Panel.Ports.Weather> {
     const url = new URL("https://api.open-meteo.com/v1/forecast");
@@ -54,7 +55,7 @@ export class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvi
     url.searchParams.set("hourly", "precipitation_probability");
     url.searchParams.set("forecast_days", "1");
     url.searchParams.set("current", "temperature_2m,apparent_temperature,weather_code");
-    url.searchParams.set("timezone", "Europe/Warsaw");
+    url.searchParams.set("timezone", timezone);
     url.searchParams.set("language", language);
 
     const response = await fetch(url);

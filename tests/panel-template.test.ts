@@ -6,7 +6,7 @@ const css = "";
 
 describe("PanelTemplate", async () => {
   test("en", async () => {
-    const result = new Panel.Services.PanelTemplate().create("en", mocks.weather, css);
+    const result = new Panel.Services.PanelTemplate().create("en", mocks.timezone, mocks.weather, css);
 
     expect(result).toInclude(mocks.location);
     expect(result).toInclude("January 1");
