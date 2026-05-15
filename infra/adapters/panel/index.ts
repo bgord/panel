@@ -5,7 +5,7 @@ import { createWeatherProvider } from "./weather-provider.adapter";
 
 export async function createPanelAdapters(Env: EnvironmentResultType) {
   return {
-    WeatherProvider: createWeatherProvider(Env),
+    WeatherProvider: await createWeatherProvider(Env),
     PanelTemplateGenerator: createPanelTemplateGenerator(Env),
     PanelImageGenerator: createPanelImageGenerator(Env),
   };
