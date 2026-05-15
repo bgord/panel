@@ -48,6 +48,7 @@ export const weather: Panel.Ports.Weather = {
   generatedAt: T0,
   condition: "sunny",
   conditionImageUrl: "https://example.com",
+  aqi: tools.Int.nonNegative(50),
 };
 
 export const IntentionalError = "intentional.error" as const;

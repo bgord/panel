@@ -11,6 +11,7 @@ export type Weather = {
   };
   condition: string;
   conditionImageUrl: string;
+  aqi: tools.IntegerNonNegativeType;
   generatedAt: tools.Timestamp;
 };
 

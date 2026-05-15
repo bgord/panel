@@ -8,6 +8,21 @@ export class PanelTemplate {
     weather: Panel.Ports.Weather,
     css: string,
   ): string {
+    const aqi =
+      weather.aqi <= 50
+        ? "good"
+        : weather.aqi <= 100
+          ? "moderate"
+          : weather.aqi <= 150
+            ? "sensitive"
+            : weather.aqi <= 200
+              ? "unhealthy"
+              : weather.aqi
+                ? "very unhealthy"
+                : weather.aqi
+                  ? "hazardous"
+                  : "";
+
     return /* HTML */ `
       <html lang="${language}">
         <head>
@@ -55,6 +70,9 @@ export class PanelTemplate {
               ${weather.precipitation.currentHourProbability}% precipitation
               (${weather.precipitation.next3HoursMaxProbability}% in 3 hours)
             </div>
+
+            <div data-fs="xl" data-color="neutral-300" data-mt="5">AQI ${weather.aqi}/500</div>
+            <div class="c-badge" data-variant="outline" data-fs="xl" data-mt="3">${aqi}</div>
           </section>
 
           <section data-color="neutral-400" data-m="8">

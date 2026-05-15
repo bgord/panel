@@ -34,6 +34,7 @@ export async function createWeatherProvider(
       currentHourProbability: tools.Int.nonNegative(70),
       next3HoursMaxProbability: tools.Int.nonNegative(80),
     },
+    aqi: tools.Int.nonNegative(50),
   };
 
   return {

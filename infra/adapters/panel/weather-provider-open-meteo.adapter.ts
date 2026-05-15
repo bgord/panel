@@ -7,15 +7,17 @@ type Dependencies = { Clock: bg.ClockPort };
 
 type OpenMeteoCoordinates = { latitude: number; longitude: number };
 type OpenMeteoGeocodingResult = { results: Array<OpenMeteoCoordinates> };
-type OpenMeteoCurrentWeatherResult = {
+type OpenMeteoWeatherResult = {
   current: { temperature_2m: number; apparent_temperature: number; weather_code: number };
   hourly: { precipitation_probability: Array<number> };
 };
+type OpenMeteoAqiResult = { current: { us_aqi: number } };
 
 const WeatherProviderOpenMeteoAdapterError = {
   GeocodingFailed: "weather.provider.open.meteo.adapter.geocoding.failed",
   LocationNotFound: "weather.provider.open.meteo.adapter.location.not.found",
   WeatherFailed: "weather.provider.open.meteo.adapter.weather.failed",
+  AQIFailed: "weather.provider.open.meteo.adapter.aqi.failed",
 };
 
 export class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvider {
@@ -49,28 +51,34 @@ export class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvi
     timezone: tools.TimezoneType,
     location: Panel.VO.PanelLocationType,
   ): Promise<Panel.Ports.Weather> {
-    const url = new URL("https://api.open-meteo.com/v1/forecast");
-    url.searchParams.set("latitude", this.coordinates.latitude.toString());
-    url.searchParams.set("longitude", this.coordinates.longitude.toString());
-    url.searchParams.set("hourly", "precipitation_probability");
-    url.searchParams.set("forecast_days", "1");
-    url.searchParams.set("current", "temperature_2m,apparent_temperature,weather_code");
-    url.searchParams.set("timezone", timezone);
-    url.searchParams.set("language", language);
+    const weatherUrl = new URL("https://api.open-meteo.com/v1/forecast");
+    weatherUrl.searchParams.set("latitude", this.coordinates.latitude.toString());
+    weatherUrl.searchParams.set("longitude", this.coordinates.longitude.toString());
+    weatherUrl.searchParams.set("hourly", "precipitation_probability");
+    weatherUrl.searchParams.set("forecast_days", "1");
+    weatherUrl.searchParams.set("current", "temperature_2m,apparent_temperature,weather_code");
+    weatherUrl.searchParams.set("timezone", timezone);
+    weatherUrl.searchParams.set("language", language);
 
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(WeatherProviderOpenMeteoAdapterError.WeatherFailed);
+    const aqiUrl = new URL("https://air-quality-api.open-meteo.com/v1/air-quality");
+    aqiUrl.searchParams.set("latitude", this.coordinates.latitude.toString());
+    aqiUrl.searchParams.set("longitude", this.coordinates.longitude.toString());
+    aqiUrl.searchParams.set("current", "us_aqi");
+    aqiUrl.searchParams.set("timezone", timezone);
 
-    const weather = (await response.json()) as OpenMeteoCurrentWeatherResult;
+    const [weatherResponse, aqiResponse] = await Promise.all([fetch(weatherUrl), fetch(aqiUrl)]);
 
-    const hour = this.deps.Clock.now().toInstant().toZonedDateTimeISO("Europe/Warsaw").hour;
+    if (!weatherResponse.ok) throw new Error(WeatherProviderOpenMeteoAdapterError.WeatherFailed);
+    if (!aqiResponse.ok) throw new Error(WeatherProviderOpenMeteoAdapterError.AQIFailed);
 
-    const currentHourProbability = weather.hourly.precipitation_probability[hour] ?? 0;
+    const weather = (await weatherResponse.json()) as OpenMeteoWeatherResult;
+    const aqi = (await aqiResponse.json()) as OpenMeteoAqiResult;
 
-    const nextHours = [1, 2, 3]
-      .map((offset) => weather.hourly.precipitation_probability[hour + offset])
+    const currentHour = this.deps.Clock.now().toInstant().toZonedDateTimeISO(timezone).hour;
+    const currentHourProbability = weather.hourly.precipitation_probability[currentHour] ?? 0;
+    const nextHours = [0, 1, 2]
+      .map((offset) => weather.hourly.precipitation_probability[currentHour + offset])
       .filter((value) => value !== undefined);
-
     const nextHoursMaxProbability = Math.max(...nextHours);
 
     const condition = WMO[weather.current.weather_code];
@@ -83,8 +91,9 @@ export class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvi
         currentHourProbability: tools.Int.nonNegative(currentHourProbability),
         next3HoursMaxProbability: tools.Int.nonNegative(nextHoursMaxProbability),
       },
-      condition: condition?.description ?? "nieznane",
+      condition: condition?.description ?? "unknown",
       conditionImageUrl: condition?.image ?? "",
+      aqi: tools.Int.nonNegative(aqi.current.us_aqi),
       generatedAt: this.deps.Clock.now(),
     };
   }

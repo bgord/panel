@@ -18,6 +18,8 @@ describe("PanelTemplate", async () => {
     expect(result).toInclude(`feels like ${mocks.weather.feelsLikeCelsius} °C`);
     expect(result).toInclude(`${mocks.weather.precipitation.currentHourProbability}% precipitation`);
     expect(result).toInclude(mocks.weather.precipitation.next3HoursMaxProbability.toString());
+    expect(result).toInclude(`${mocks.weather.aqi}/500`);
+    expect(result).toInclude("good");
     expect(result).toInclude("Wednesday, January 1, 2025 at 1:00 AM");
   });
 });
