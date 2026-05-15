@@ -1,7 +1,7 @@
 import * as bg from "@bgord/bun";
 import type { EnvironmentResultType } from "+infra/env";
 
-export function createImageGenerator(Env: EnvironmentResultType): bg.ImageGenerator {
+export function createImageGenerator(Env: EnvironmentResultType): bg.ImageGeneratorPort {
   return {
     [bg.NodeEnvironmentEnum.local]: new bg.ImageGeneratorWebViewAdapter(),
     [bg.NodeEnvironmentEnum.test]: new bg.ImageGeneratorNoopAdapter(),

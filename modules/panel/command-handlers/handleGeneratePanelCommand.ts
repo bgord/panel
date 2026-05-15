@@ -6,7 +6,7 @@ import * as Panel from "+panel";
 type Dependencies = {
   WeatherProvider: Panel.Ports.WeatherProvider;
   PanelTemplateGenerator: Panel.Ports.PanelTemplateGenerator;
-  ImageGenerator: bg.ImageGenerator;
+  ImageGenerator: bg.ImageGeneratorPort;
   TemporaryFile: bg.TemporaryFilePort;
   ImageGrayscale: bg.ImageGrayscalePort;
   RemoteFileStorage: bg.RemoteFileStoragePort;
@@ -21,12 +21,12 @@ export const handleGeneratePanelCommand =
       Panel.VO.PanelMime.extensions[0]!,
     );
     const template = await deps.PanelTemplateGenerator.generate(command.payload.language, weather);
-    const image = await deps.ImageGenerator.generate(
+    const image = await deps.ImageGenerator.generate({
       template,
       filename,
-      Panel.VO.PanelWidth,
-      Panel.VO.PanelHeight,
-    );
+      width: Panel.VO.PanelWidth,
+      height: Panel.VO.PanelHeight,
+    });
 
     const file = new File([image], filename.toString());
     const temporary = await deps.TemporaryFile.write(filename, file);
