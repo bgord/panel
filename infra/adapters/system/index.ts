@@ -10,6 +10,7 @@ import { createFileRenamer } from "./file-renamer.adapter";
 import { FileWriter } from "./file-writer.adapter";
 import { createHashFile } from "./hash-file.adapter";
 import { IdProvider } from "./id-provider.adapter";
+import { createImageGenerator } from "./image-generator.adapter";
 import { createImageGrayscale } from "./image-grayscale.adapter";
 import { createImageProcessor } from "./image-processor.adapter";
 import { createLogger } from "./logger.adapter";
@@ -50,5 +51,6 @@ export async function createSystemAdapters(Env: EnvironmentResultType) {
     TimeoutRunner,
     RemoteFileStorage: createRemoteFileStorage(Env, { HashFile, FileCleaner, FileRenamer, Logger, Clock }),
     FileInspection,
+    ImageGenerator: createImageGenerator(Env),
   };
 }

@@ -6,7 +6,7 @@ import * as Panel from "+panel";
 type Dependencies = {
   WeatherProvider: Panel.Ports.WeatherProvider;
   PanelTemplateGenerator: Panel.Ports.PanelTemplateGenerator;
-  ImageGenerator: Panel.Ports.ImageGenerator;
+  ImageGenerator: bg.ImageGenerator;
   TemporaryFile: bg.TemporaryFilePort;
   ImageGrayscale: bg.ImageGrayscalePort;
   RemoteFileStorage: bg.RemoteFileStoragePort;
