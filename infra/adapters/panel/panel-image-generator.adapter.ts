@@ -14,7 +14,7 @@ class PanelImageGeneratorWebViewAdapter implements Panel.Ports.PanelImageGenerat
   ): Promise<File> {
     await using view = new Bun.WebView({ height, width });
 
-    await view.navigate(`data:text/html,${template}`);
+    await view.navigate(`data:text/html;charset=utf-8,${template}`);
 
     const image = await view.screenshot({
       encoding: "blob",
