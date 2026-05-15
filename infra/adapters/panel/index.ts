@@ -1,6 +1,6 @@
 import type * as bg from "@bgord/bun";
 import type { EnvironmentResultType } from "+infra/env";
-import { createPanelImageGenerator } from "./panel-image-generator.adapter";
+import { createImageGenerator } from "./image-generator.adapter";
 import { createPanelTemplateGenerator } from "./panel-template-generator.adapter";
 import { createWeatherProvider } from "./weather-provider.adapter";
 
@@ -10,6 +10,6 @@ export async function createPanelAdapters(Env: EnvironmentResultType, deps: Depe
   return {
     WeatherProvider: await createWeatherProvider(Env, deps),
     PanelTemplateGenerator: await createPanelTemplateGenerator(Env, deps),
-    PanelImageGenerator: createPanelImageGenerator(Env),
+    ImageGenerator: createImageGenerator(Env),
   };
 }

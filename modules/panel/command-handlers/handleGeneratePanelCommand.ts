@@ -6,7 +6,7 @@ import * as Panel from "+panel";
 type Dependencies = {
   WeatherProvider: Panel.Ports.WeatherProvider;
   PanelTemplateGenerator: Panel.Ports.PanelTemplateGenerator;
-  PanelImageGenerator: Panel.Ports.PanelImageGenerator;
+  ImageGenerator: Panel.Ports.ImageGenerator;
   TemporaryFile: bg.TemporaryFilePort;
   ImageGrayscale: bg.ImageGrayscalePort;
   RemoteFileStorage: bg.RemoteFileStoragePort;
@@ -21,14 +21,15 @@ export const handleGeneratePanelCommand =
       Panel.VO.PanelMime.extensions[0]!,
     );
     const template = await deps.PanelTemplateGenerator.generate(command.payload.language, weather);
-    const image = await deps.PanelImageGenerator.generate(
+    const image = await deps.ImageGenerator.generate(
       template,
       filename,
       Panel.VO.PanelWidth,
       Panel.VO.PanelHeight,
     );
 
-    const temporary = await deps.TemporaryFile.write(filename, image);
+    const file = new File([image], filename.toString());
+    const temporary = await deps.TemporaryFile.write(filename, file);
 
     await deps.ImageGrayscale.grayscale({ strategy: "in_place", input: temporary });
     await deps.RemoteFileStorage.putFromPath({

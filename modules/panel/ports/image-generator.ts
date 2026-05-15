@@ -1,10 +1,10 @@
 import type * as tools from "@bgord/tools";
 
-export interface PanelImageGenerator {
+export interface ImageGenerator {
   generate(
     template: string,
     filename: tools.Filename,
     width: tools.ImageWidthType,
     height: tools.ImageHeightType,
-  ): Promise<File>;
+  ): Promise<Uint8Array<ArrayBuffer>>;
 }
