@@ -2,7 +2,12 @@ import type * as tools from "@bgord/tools";
 import type * as Panel from "+panel";
 
 export class PanelTemplate {
-  create(language: tools.LanguageType, weather: Panel.Ports.Weather, css: string): string {
+  create(
+    language: tools.LanguageType,
+    timezone: tools.TimezoneType,
+    weather: Panel.Ports.Weather,
+    css: string,
+  ): string {
     return /* HTML */ `
       <html lang="${language}">
         <head>
@@ -21,7 +26,7 @@ export class PanelTemplate {
           <section data-fs="lg" data-color="neutral-700" data-bg="neutral-200" data-p="3">
             ${weather.generatedAt
               .toInstant()
-              .toZonedDateTimeISO("Europe/Warsaw")
+              .toZonedDateTimeISO(timezone)
               .toLocaleString(language, { day: "numeric", month: "long" })}
           </section>
 
@@ -56,7 +61,7 @@ export class PanelTemplate {
             Generated at
             ${weather.generatedAt
               .toInstant()
-              .toZonedDateTimeISO("Europe/Warsaw")
+              .toZonedDateTimeISO(timezone)
               .toLocaleString(language, { dateStyle: "full", timeStyle: "short" })}
           </section>
         </body>

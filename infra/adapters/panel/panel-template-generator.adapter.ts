@@ -11,8 +11,12 @@ class PanelTemplateGeneratorAdapter implements Panel.Ports.PanelTemplateGenerato
     private readonly css: string,
   ) {}
 
-  async generate(language: tools.LanguageType, weather: Panel.Ports.Weather): Promise<string> {
-    return this.template.create(language, weather, this.css);
+  async generate(
+    language: tools.LanguageType,
+    timezone: tools.TimezoneType,
+    weather: Panel.Ports.Weather,
+  ): Promise<string> {
+    return this.template.create(language, timezone, weather, this.css);
   }
 }
 
