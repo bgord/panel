@@ -1,6 +1,6 @@
 import * as v from "valibot";
 
-export const PanelLocationError = {
+const PanelLocationError = {
   Type: "panel.location.type",
   Empty: "panel.location.empty",
   TooLong: "panel.location.too.long",

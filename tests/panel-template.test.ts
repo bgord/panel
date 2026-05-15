@@ -1,15 +1,12 @@
 import { describe, expect, test } from "bun:test";
-import {
-  PanelTemplateGeneratorAdapter,
-  template,
-} from "+infra/adapters/panel/panel-template-generator.adapter";
+import * as Panel from "+panel";
 import * as mocks from "./mocks";
 
 const css = "";
 
-describe("PanelTemplateGeneratorAdapter", async () => {
+describe("PanelTemplate", async () => {
   test("en", async () => {
-    const result = await new PanelTemplateGeneratorAdapter(template, css).generate("en", mocks.weather);
+    const result = new Panel.Services.PanelTemplate().create("en", mocks.weather, css);
 
     expect(result).toInclude(mocks.location);
     expect(result).toInclude("January 1");
@@ -22,6 +19,6 @@ describe("PanelTemplateGeneratorAdapter", async () => {
     expect(result).toInclude(
       `${mocks.weather.precipitation.probability}% precipitation (${mocks.weather.precipitation.hour}:00)`,
     );
-    expect(result).toInclude("Generated at Wednesday, January 1, 2025 at 1:00 AM");
+    expect(result).toInclude("Wednesday, January 1, 2025 at 1:00 AM");
   });
 });
