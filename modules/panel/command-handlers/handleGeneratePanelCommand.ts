@@ -16,17 +16,18 @@ export const handleGeneratePanelCommand =
   (deps: Dependencies) => async (command: Panel.Commands.GeneratePanelCommandType) => {
     const weather = await deps.WeatherCurrentReader.read(command.payload.location);
 
-    const template = await deps.PanelTemplateGenerator.generate(weather);
-    const image = await deps.PanelImageGenerator.generate(
-      template,
-      Panel.VO.PanelWidth,
-      Panel.VO.PanelHeight,
-    );
-
     const filename = tools.Filename.fromParts(
       v.parse(tools.Basename, command.createdAt),
       Panel.VO.PanelMime.extensions[0]!,
     );
+    const template = await deps.PanelTemplateGenerator.generate(weather);
+    const image = await deps.PanelImageGenerator.generate(
+      template,
+      filename,
+      Panel.VO.PanelWidth,
+      Panel.VO.PanelHeight,
+    );
+
     const temporary = await deps.TemporaryFile.write(filename, image);
 
     await deps.ImageGrayscale.grayscale({ strategy: "in_place", input: temporary });
