@@ -17,7 +17,7 @@ export const handleGeneratePanelCommand =
     const weather = await deps.WeatherCurrentReader.read(command.payload.location);
 
     const filename = tools.Filename.fromParts(
-      v.parse(tools.Basename, command.createdAt),
+      v.parse(tools.Basename, command.createdAt.toString()),
       Panel.VO.PanelMime.extensions[0]!,
     );
     const template = await deps.PanelTemplateGenerator.generate(weather);
@@ -31,6 +31,5 @@ export const handleGeneratePanelCommand =
     const temporary = await deps.TemporaryFile.write(filename, image);
 
     await deps.ImageGrayscale.grayscale({ strategy: "in_place", input: temporary });
-
     await deps.RemoteFileStorage.putFromPath({ path: temporary, key: Panel.VO.PanelKeyFactory.stable() });
   };
