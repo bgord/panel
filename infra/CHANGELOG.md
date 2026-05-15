@@ -1,0 +1,39 @@
+# Changelog
+- 2026-05-15 11:32 56c6103 **step: setup image grayscale adapter**
+## 2026-05-15 11:32 
+- 2026-05-15 11:28 0dd8519 **step: setup weather current reader adapter**
+- 2026-05-15 11:21 bee0400 **step: bump bgord/scripts**
+- 2026-05-15 11:18 a82567a **step: update project names**
+- 2026-05-15 11:17 1d239ba **step: add handleGeneratePanelCommand**
+- 2026-05-13 22:07 d7cd4ac **step: update image adapters**
+- 2026-05-13 22:07 3c32ddf **step: update packages**
+- 2026-05-13 15:04 7b89c75 **step: update workflows**
+- 2026-05-13 15:03 2181175 **step: bump bgord/scripts**
+- 2026-05-13 13:45 c53dc3e **step: bump bgord/scripts**
+- 2026-05-13 13:45 7b3b9de **step: update docs app**
+- 2026-05-13 13:39 a1a8afb **step: update packages**
+- 2026-05-13 13:39 82e11c2 **step: update bun**
+- 2026-05-13 13:39 35ab398 **step: bump bgord/scripts**
+- 2026-05-13 13:20 75fba7f **step: add zizmor prereq**
+- 2026-05-09 09:25 b2e580e **step: define panel vos**
+- 2026-05-09 09:20 3bccd7b **step: add panel image generator**
+- 2026-05-09 08:48 0e7db72 **step: add panel location vo**
+- 2026-05-09 08:45 7548d92 **step: add location to command**
+- 2026-05-09 08:42 380d5b7 **step: add panel generator port**
+- 2026-05-08 23:32 a094d30 **step: add weather current reader**
+- 2026-05-08 23:10 a23e399 **step: add generate panel command handler**
+- 2026-05-08 21:59 36f484d **step: setup generate panel command**
+- 2026-05-08 21:09 a5cbff1 **step: infra**
+- 2026-05-08 20:50 7147837 **step: add tests**
+- 2026-05-08 20:46 94615ac **step: add server**
+- 2026-05-08 20:42 d979692 **step: add languages**
+- 2026-05-08 20:39 b8776a8 **step: setup index**
+- 2026-05-08 20:38 82384ff **step: add scripts**
+- 2026-05-08 20:32 a90b329 **step: setup app**
+- 2026-05-08 20:29 0c8fc1f **step: install packages**
+- 2026-05-08 19:32 570c8c8 **step: setup lefthook**
+- 2026-05-08 19:30 c594b10 **step: setup tsconfig**
+- 2026-05-08 19:28 36962a5 **step: add github workflows**
+- 2026-05-08 18:50 8d746f1 **step: setup env**
+- 2026-05-08 18:47 04feb71 **step: setup bgord scripts**
+- 2026-05-08 18:46 bb9f4e7 **step: setup gitignore**

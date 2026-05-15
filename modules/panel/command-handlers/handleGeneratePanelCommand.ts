@@ -16,7 +16,7 @@ export const handleGeneratePanelCommand =
   (deps: Dependencies) => async (command: Panel.Commands.GeneratePanelCommandType) => {
     const weather = await deps.WeatherCurrentReader.read(command.payload.location);
 
-    const template = deps.PanelTemplateGenerator.generate(weather);
+    const template = await deps.PanelTemplateGenerator.generate(weather);
     const image = await deps.PanelImageGenerator.generate(
       template,
       Panel.VO.PanelWidth,

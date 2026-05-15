@@ -21,6 +21,7 @@ export type EnvironmentResultType = bg.EnvironmentResultType<EnvironmentType>;
 export const MasterKeyPath = tools.FilePathAbsolute.fromString("/etc/bgord/panel/master.key");
 export const SecretsPath = tools.FilePathAbsolute.fromString("/var/www/panel/secrets.enc");
 
+// TODO: Why do I need to add <EnvironmentType> to suppress TS errors here and not anywhere else?
 export async function createEnvironmentLoader(): Promise<bg.EnvironmentLoaderPort<EnvironmentType>> {
   const type = v.parse(v.enum(bg.NodeEnvironmentEnum), process.env.NODE_ENV);
   const config = { type, EnvironmentSchema };
@@ -46,17 +47,28 @@ export async function createEnvironmentLoader(): Promise<bg.EnvironmentLoaderPor
 
   const HashContent = new bg.HashContentSha256Strategy();
 
-  const EnvironmentLoaderProcessSafe = new bg.EnvironmentLoaderProcessSafeAdapter(process.env, config, {
-    CacheResolver,
-    HashContent,
-  });
+  const EnvironmentLoaderProcessSafe = new bg.EnvironmentLoaderProcessSafeAdapter<EnvironmentType>(
+    process.env,
+    config,
+    {
+      CacheResolver,
+      HashContent,
+    },
+  );
 
   return {
     [bg.NodeEnvironmentEnum.local]: EnvironmentLoaderProcessSafe,
-    [bg.NodeEnvironmentEnum.test]: new bg.EnvironmentLoaderProcessAdapter(process.env, config),
+    [bg.NodeEnvironmentEnum.test]: new bg.EnvironmentLoaderProcessAdapter<EnvironmentType>(
+      process.env,
+      config,
+    ),
     [bg.NodeEnvironmentEnum.staging]: EnvironmentLoaderProcessSafe,
-    [bg.NodeEnvironmentEnum.production]: new bg.EnvironmentLoaderEncryptedAdapter(SecretsPath, config, {
-      Encryption,
-    }),
+    [bg.NodeEnvironmentEnum.production]: new bg.EnvironmentLoaderEncryptedAdapter<EnvironmentType>(
+      SecretsPath,
+      config,
+      {
+        Encryption,
+      },
+    ),
   }[type];
 }
