@@ -9,6 +9,7 @@ import { createFileRenamer } from "./file-renamer.adapter";
 import { FileWriter } from "./file-writer.adapter";
 import { createHashFile } from "./hash-file.adapter";
 import { IdProvider } from "./id-provider.adapter";
+import { createImageGrayscale } from "./image-grayscale.adapter";
 import { createImageProcessor } from "./image-processor.adapter";
 import { createLogger } from "./logger.adapter";
 import { createRemoteFileStorage } from "./remote-file-storage.adapter";
@@ -42,6 +43,7 @@ export async function createSystemAdapters(Env: EnvironmentResultType) {
     TemporaryFile,
     HashFile,
     ImageProcessor: createImageProcessor(Env, { FileCleaner, FileRenamer, FileReaderJson, FileWriter }),
+    ImageGrayscale: createImageGrayscale(Env, { FileRenamer, FileWriter }),
     Sleeper,
     TimeoutRunner,
     RemoteFileStorage: createRemoteFileStorage(Env, { HashFile, FileCleaner, FileRenamer, Logger, Clock }),
