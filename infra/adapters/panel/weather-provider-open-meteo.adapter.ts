@@ -62,9 +62,15 @@ export class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvi
 
     const weather = (await response.json()) as OpenMeteoCurrentWeatherResult;
 
-    const probabilities = weather.hourly.precipitation_probability;
-    const hour = probabilities.indexOf(Math.max(...probabilities));
-    const probability = probabilities[hour];
+    const hour = this.deps.Clock.now().toInstant().toZonedDateTimeISO("Europe/Warsaw").hour;
+
+    const currentHourProbability = weather.hourly.precipitation_probability[hour] ?? 0;
+
+    const nextHours = [1, 2, 3]
+      .map((offset) => weather.hourly.precipitation_probability[hour + offset])
+      .filter((value) => value !== undefined);
+
+    const nextHoursMaxProbability = Math.max(...nextHours);
 
     const condition = WMO[weather.current.weather_code];
 
@@ -73,8 +79,8 @@ export class WeatherProviderOpenMeteoAdapter implements Panel.Ports.WeatherProvi
       temperatureCelsius: tools.Int.of(this.rounding.round(weather.current.temperature_2m)),
       feelsLikeCelsius: tools.Int.of(this.rounding.round(weather.current.apparent_temperature)),
       precipitation: {
-        hour: tools.Hour.fromValue(hour).get(),
-        probability: tools.Int.nonNegative(probability as number),
+        currentHourProbability: tools.Int.nonNegative(currentHourProbability),
+        next3HoursMaxProbability: tools.Int.nonNegative(nextHoursMaxProbability),
       },
       condition: condition?.description ?? "nieznane",
       conditionImageUrl: condition?.image ?? "",

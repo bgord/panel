@@ -40,7 +40,10 @@ export const weather: Panel.Ports.Weather = {
   location,
   temperatureCelsius: tools.Int.of(15),
   feelsLikeCelsius: tools.Int.of(14),
-  precipitation: { probability: tools.Int.nonNegative(90), hour: tools.Hour.fromValue(15).get() },
+  precipitation: {
+    currentHourProbability: tools.Int.nonNegative(90),
+    next3HoursMaxProbability: tools.Int.nonNegative(100),
+  },
   generatedAt: T0,
   condition: "sunny",
   conditionImageUrl: "https://example.com",

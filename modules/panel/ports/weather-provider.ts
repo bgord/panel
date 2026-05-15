@@ -5,7 +5,10 @@ export type Weather = {
   location: Panel.VO.PanelLocationType;
   temperatureCelsius: tools.IntegerType;
   feelsLikeCelsius: tools.IntegerType;
-  precipitation: { probability: tools.IntegerNonNegativeType; hour: tools.HourValueType };
+  precipitation: {
+    currentHourProbability: tools.IntegerNonNegativeType;
+    next3HoursMaxProbability: tools.IntegerNonNegativeType;
+  };
   condition: string;
   conditionImageUrl: string;
   generatedAt: tools.Timestamp;

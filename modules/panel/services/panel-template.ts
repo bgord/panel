@@ -47,7 +47,8 @@ export class PanelTemplate {
             </div>
 
             <div data-fs="xl" data-color="neutral-300" data-mt="8">
-              ${weather.precipitation.probability}% precipitation (${weather.precipitation.hour}:00)
+              ${weather.precipitation.currentHourProbability}% precipitation
+              (${weather.precipitation.next3HoursMaxProbability}% in 3 hours)
             </div>
           </section>
 

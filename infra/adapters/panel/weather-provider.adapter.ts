@@ -29,7 +29,10 @@ export async function createWeatherProvider(
     feelsLikeCelsius: tools.Int.of(14),
     condition: "sunny",
     conditionImageUrl: "http://openweathermap.org/img/wn/01d@2x.png",
-    precipitation: { hour: tools.Hour.fromValue(15).get(), probability: tools.Int.nonNegative(70) },
+    precipitation: {
+      currentHourProbability: tools.Int.nonNegative(70),
+      next3HoursMaxProbability: tools.Int.nonNegative(80),
+    },
   };
 
   return {

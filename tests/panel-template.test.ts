@@ -16,9 +16,8 @@ describe("PanelTemplate", async () => {
     expect(result).toInclude(mocks.weather.condition);
     expect(result).toInclude(`${mocks.weather.temperatureCelsius} °C`);
     expect(result).toInclude(`feels like ${mocks.weather.feelsLikeCelsius} °C`);
-    expect(result).toInclude(
-      `${mocks.weather.precipitation.probability}% precipitation (${mocks.weather.precipitation.hour}:00)`,
-    );
+    expect(result).toInclude(`${mocks.weather.precipitation.currentHourProbability}% precipitation`);
+    expect(result).toInclude(mocks.weather.precipitation.next3HoursMaxProbability.toString());
     expect(result).toInclude("Wednesday, January 1, 2025 at 1:00 AM");
   });
 });
