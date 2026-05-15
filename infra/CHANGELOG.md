@@ -1,6 +1,45 @@
 # Changelog
+- 2026-05-15 19:53 ede0e37 **step: update workflows**
+## 2026-05-15 19:53 
+- 2026-05-15 19:52 be8ef53 **step: create panel template service**
+- 2026-05-15 19:45 6ee7532 **refactor: adjust image generator config**
+- 2026-05-15 19:44 219a210 **step: update packages**
+- 2026-05-15 19:42 c436fb4 **refactor: use image generator from bgord**
+- 2026-05-15 19:32 f19ef6b **step: update packages**
+- 2026-05-15 18:55 198be80 **step: improve image generator**
+- 2026-05-15 18:35 506c08b **step: add language specific panel key**
+- 2026-05-15 18:32 044e661 **step: pass language to weather provider**
+- 2026-05-15 18:23 713e65c **step: add language to generate panel job**
+- 2026-05-15 18:22 18b6587 **step: add language to generate panel command**
+- 2026-05-15 18:09 abc16c6 **step: test template**
+- 2026-05-15 17:59 0e2d0bd **step: update template**
+- 2026-05-15 17:51 10b3575 **step: add job handler test**
+- 2026-05-15 17:40 e4c0339 **step: test generate panel scheduler**
+- 2026-05-15 17:40 8e818a7 **step: add job pruner worker**
+- 2026-05-15 17:33 28e7fa7 **step: add tests**
+- 2026-05-15 16:39 685b426 **step: improve template**
+- 2026-05-15 16:02 4a380fe **step: add generate panel script**
+- 2026-05-15 15:38 4e76741 **step: inject bgord design**
+- 2026-05-15 15:19 ece6cb5 **step: add file reader text adapter**
+- 2026-05-15 15:17 8bfa863 **step: update packages**
+- 2026-05-15 14:44 dfba6d3 **fix: panel image generator**
+- 2026-05-15 14:35 2b78600 **step: extract open meteo adapter to a file**
+- 2026-05-15 14:31 2ac244b **step: cleanup weather provider adapter**
+- 2026-05-15 14:16 bd3f85d **step: add weather provider condition**
+- 2026-05-15 14:16 2bf700a **step: add wmo codes**
+- 2026-05-15 14:09 9b98f21 **step: add feels like temp**
+- 2026-05-15 14:05 a1d3e3b **step: add precipitation**
+- 2026-05-15 13:56 e1878dc **step: add day**
+- 2026-05-15 13:46 8304427 **step: add generated at info**
+- 2026-05-15 13:32 3fa17e6 **step: add open meteo adapter**
+- 2026-05-15 13:17 342972f **refactor: rename weather provider**
+- 2026-05-15 13:08 b9ab0c5 **step: improve template**
+- 2026-05-15 12:52 3eb2192 **fix: cron task handler**
+- 2026-05-15 12:50 af5ca6a **fix: tests**
+- 2026-05-15 12:49 61d53a3 **step: add panel location to env**
+- 2026-05-15 12:49 3117894 **step: setup generate panel scheduler cron task**
+- 2026-05-15 12:47 f48c175 **step: define generate panel scheduler**
 - 2026-05-15 12:33 7cc663b **refactor: rename generate**
-## 2026-05-15 12:33 
 - 2026-05-15 12:30 6827902 **step: add job queue handler**
 - 2026-05-15 12:20 f474ae9 **step: add schedule panel job handler**
 - 2026-05-15 12:16 fb64dca **step: add schedule panel job**
@@ -12,6 +51,7 @@
 - 2026-05-15 11:21 bee0400 **step: bump bgord/scripts**
 - 2026-05-15 11:18 a82567a **step: update project names**
 - 2026-05-15 11:17 1d239ba **step: add handleGeneratePanelCommand**
+- 2026-05-15 10:38 a29efe3 **docs: generate CHANGELOG**
 - 2026-05-15 09:32 3b2237f **docs: generate CHANGELOG**
 - 2026-05-13 22:07 d7cd4ac **step: update image adapters**
 - 2026-05-13 22:07 3c32ddf **step: update packages**
