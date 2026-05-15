@@ -1,17 +1,21 @@
 import * as bg from "@bgord/bun";
+import * as tools from "@bgord/tools";
 import type * as Panel from "+panel";
 import type { EnvironmentResultType } from "+infra/env";
 
-const template = /* HTML */ (weather: Panel.Ports.Weather) => `
+type Dependencies = { FileReaderText: bg.FileReaderTextPort };
+
+const template = /* HTML */ (weather: Panel.Ports.Weather, css: string) => `
     <html>
       <head>
         <style>
           html {
             font-family: sans-serif;
           }
+          ${css}
         </style>
       </head>
-      <body>
+      <body data-bg="neutral-100">
         <h1>Panel</h1>
         <section>
           <h2>Pogoda</h2>
@@ -39,18 +43,28 @@ const template = /* HTML */ (weather: Panel.Ports.Weather) => `
   `;
 
 class PanelTemplateGeneratorAdapter implements Panel.Ports.PanelTemplateGenerator {
-  constructor(private readonly template: (weahter: Panel.Ports.Weather) => string) {}
+  constructor(
+    private readonly template: (weahter: Panel.Ports.Weather, css: string) => string,
+    private readonly css: string,
+  ) {}
 
   async generate(weather: Panel.Ports.Weather): Promise<string> {
-    return this.template(weather);
+    return this.template(weather, this.css);
   }
 }
 
-export function createPanelTemplateGenerator(Env: EnvironmentResultType): Panel.Ports.PanelTemplateGenerator {
+export async function createPanelTemplateGenerator(
+  Env: EnvironmentResultType,
+  deps: Dependencies,
+): Promise<Panel.Ports.PanelTemplateGenerator> {
+  const css = await deps.FileReaderText.read(
+    tools.FilePathRelative.fromString("node_modules/@bgord/design/dist/main.min.css"),
+  );
+
   return {
-    [bg.NodeEnvironmentEnum.local]: new PanelTemplateGeneratorAdapter(template),
-    [bg.NodeEnvironmentEnum.test]: new PanelTemplateGeneratorAdapter(template),
-    [bg.NodeEnvironmentEnum.staging]: new PanelTemplateGeneratorAdapter(template),
-    [bg.NodeEnvironmentEnum.production]: new PanelTemplateGeneratorAdapter(template),
+    [bg.NodeEnvironmentEnum.local]: new PanelTemplateGeneratorAdapter(template, css),
+    [bg.NodeEnvironmentEnum.test]: new PanelTemplateGeneratorAdapter(template, css),
+    [bg.NodeEnvironmentEnum.staging]: new PanelTemplateGeneratorAdapter(template, css),
+    [bg.NodeEnvironmentEnum.production]: new PanelTemplateGeneratorAdapter(template, css),
   }[Env.type];
 }

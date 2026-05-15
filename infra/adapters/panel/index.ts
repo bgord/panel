@@ -4,12 +4,12 @@ import { createPanelImageGenerator } from "./panel-image-generator.adapter";
 import { createPanelTemplateGenerator } from "./panel-template-generator.adapter";
 import { createWeatherProvider } from "./weather-provider.adapter";
 
-type Dependencies = { Clock: bg.ClockPort };
+type Dependencies = { Clock: bg.ClockPort; FileReaderText: bg.FileReaderTextPort };
 
 export async function createPanelAdapters(Env: EnvironmentResultType, deps: Dependencies) {
   return {
     WeatherProvider: await createWeatherProvider(Env, deps),
-    PanelTemplateGenerator: createPanelTemplateGenerator(Env),
+    PanelTemplateGenerator: await createPanelTemplateGenerator(Env, deps),
     PanelImageGenerator: createPanelImageGenerator(Env),
   };
 }
