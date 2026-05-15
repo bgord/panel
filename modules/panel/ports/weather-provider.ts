@@ -6,6 +6,8 @@ export type Weather = {
   temperatureCelsius: tools.IntegerType;
   feelsLikeCelsius: tools.IntegerType;
   precipitation: { probability: tools.IntegerNonNegativeType; peakHour: tools.HourValueType };
+  condition: string;
+  conditionImageUrl: string;
   generatedAt: tools.Timestamp;
 };
 
