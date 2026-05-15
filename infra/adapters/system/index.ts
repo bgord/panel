@@ -5,6 +5,7 @@ import { createDiskSpaceChecker } from "./disk-space-checker.adapter";
 import { createFileCleaner } from "./file-cleaner.adapter";
 import { createFileInspection } from "./file-inspection.adapter";
 import { FileReaderJson } from "./file-reader-json.adapter";
+import { createFileReaderText } from "./file-reader-text.adapter";
 import { createFileRenamer } from "./file-renamer.adapter";
 import { FileWriter } from "./file-writer.adapter";
 import { createHashFile } from "./hash-file.adapter";
@@ -36,6 +37,7 @@ export async function createSystemAdapters(Env: EnvironmentResultType) {
     DiskSpaceChecker: createDiskSpaceChecker(Env),
     IdProvider,
     FileReaderJson,
+    FileReaderText: createFileReaderText(Env),
     Logger,
     Timekeeper,
     FileCleaner,
