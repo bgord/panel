@@ -1,7 +1,8 @@
 # Changelog
+- 2026-05-15 20:39 53c5f80 **step: add aqi**
+## 2026-05-15 20:39 
 - 2026-05-15 20:19 e88d871 **step: include timezone in template generator**
 - 2026-05-15 20:19 84bbd46 **step: include timezone in weather provider**
-## 2026-05-15 20:19 
 - 2026-05-15 20:17 2801096 **step: add timezone to generate panel job**
 - 2026-05-15 20:16 10460a5 **step: add timezone to generate panel command**
 - 2026-05-15 20:13 85bf47e **step: add panel timezone env**
@@ -17,6 +18,7 @@
 - 2026-05-15 18:32 044e661 **step: pass language to weather provider**
 - 2026-05-15 18:23 713e65c **step: add language to generate panel job**
 - 2026-05-15 18:22 18b6587 **step: add language to generate panel command**
+- 2026-05-15 18:21 7c0e559 **docs: generate CHANGELOG**
 - 2026-05-15 18:09 abc16c6 **step: test template**
 - 2026-05-15 17:59 0e2d0bd **step: update template**
 - 2026-05-15 17:54 549347a **docs: generate CHANGELOG**
