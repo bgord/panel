@@ -3,4 +3,5 @@ export * as Commands from "./commands";
 export * as JobHandlers from "./job-handlers";
 export * as Jobs from "./jobs";
 export * as Ports from "./ports";
+export * as Services from "./services";
 export * as VO from "./value-objects";
