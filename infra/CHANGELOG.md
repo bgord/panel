@@ -1,6 +1,8 @@
 # Changelog
+- 2026-05-18 20:28 aa0b094 **step: create panel template generator config**
+## 2026-05-18 20:28 
+- 2026-05-18 16:08 3ba2a59 **step: update packages**
 - 2026-05-15 20:39 53c5f80 **step: add aqi**
-## 2026-05-15 20:39 
 - 2026-05-15 20:19 e88d871 **step: include timezone in template generator**
 - 2026-05-15 20:19 84bbd46 **step: include timezone in weather provider**
 - 2026-05-15 20:17 2801096 **step: add timezone to generate panel job**
@@ -14,6 +16,7 @@
 - 2026-05-15 19:42 c436fb4 **refactor: use image generator from bgord**
 - 2026-05-15 19:32 f19ef6b **step: update packages**
 - 2026-05-15 18:55 198be80 **step: improve image generator**
+- 2026-05-15 18:41 f90a728 **docs: generate CHANGELOG**
 - 2026-05-15 18:35 506c08b **step: add language specific panel key**
 - 2026-05-15 18:32 044e661 **step: pass language to weather provider**
 - 2026-05-15 18:23 713e65c **step: add language to generate panel job**
