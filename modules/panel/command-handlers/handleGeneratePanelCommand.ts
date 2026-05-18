@@ -24,11 +24,7 @@ export const handleGeneratePanelCommand =
       v.parse(tools.Basename, command.createdAt.toString()),
       Panel.VO.PanelMime.extensions[0]!,
     );
-    const template = await deps.PanelTemplateGenerator.generate(
-      command.payload.language,
-      command.payload.timezone,
-      weather,
-    );
+    const template = await deps.PanelTemplateGenerator.generate({ ...command.payload, weather });
     const image = await deps.ImageGenerator.generate({
       template,
       filename,
