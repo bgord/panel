@@ -1,6 +1,9 @@
 # Changelog
+- 2026-05-24 13:42 96e1d44 **step: add bunfig**
+- 2026-05-24 13:42 1df255a **step: update packages**
+## 2026-05-24 13:42 
 - 2026-05-18 20:28 aa0b094 **step: create panel template generator config**
-## 2026-05-18 20:28 
+- 2026-05-18 18:30 7162e46 **docs: generate CHANGELOG**
 - 2026-05-18 16:08 3ba2a59 **step: update packages**
 - 2026-05-15 20:39 53c5f80 **step: add aqi**
 - 2026-05-15 20:19 e88d871 **step: include timezone in template generator**
