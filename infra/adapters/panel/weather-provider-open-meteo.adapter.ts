@@ -1,3 +1,4 @@
+// cSpell:ignore meteo
 import type * as bg from "@bgord/bun";
 import * as tools from "@bgord/tools";
 import type * as Panel from "+panel";
