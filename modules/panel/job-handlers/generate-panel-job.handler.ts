@@ -1,5 +1,6 @@
 import * as bg from "@bgord/bun";
-import * as Panel from "+panel";
+import type * as Panel from "+panel";
+import { GeneratePanelCommand } from "../commands/GENERATE_PANEL_COMMAND";
 
 type AcceptedCommand = Panel.Commands.GeneratePanelCommandType;
 
@@ -12,7 +13,7 @@ type Dependencies = {
 export const GeneratePanelJobHandler =
   (deps: Dependencies) =>
   async (job: Panel.Jobs.GeneratePanelJobType): Promise<void> => {
-    const command = bg.command(Panel.Commands.GeneratePanelCommand, { payload: job.payload }, deps);
+    const command = bg.command(GeneratePanelCommand, { payload: job.payload }, deps);
 
     await deps.CommandBus.emit(command);
   };
