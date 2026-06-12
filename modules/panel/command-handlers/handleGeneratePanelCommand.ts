@@ -1,7 +1,11 @@
 import type * as bg from "@bgord/bun";
 import * as tools from "@bgord/tools";
 import * as v from "valibot";
-import * as Panel from "+panel";
+import type * as Panel from "+panel";
+import { PanelHeight } from "../value-objects/panel-height";
+import { PanelKeyFactory } from "../value-objects/panel-key";
+import { PanelMime } from "../value-objects/panel-mime-registry";
+import { PanelWidth } from "../value-objects/panel-width";
 
 type Dependencies = {
   WeatherProvider: Panel.Ports.WeatherProvider;
@@ -22,14 +26,14 @@ export const handleGeneratePanelCommand =
 
     const filename = tools.Filename.fromParts(
       v.parse(tools.Basename, command.createdAt.toString()),
-      Panel.VO.PanelMime.extensions[0]!,
+      PanelMime.extensions[0]!,
     );
     const template = await deps.PanelTemplateGenerator.generate({ ...command.payload, weather });
     const image = await deps.ImageGenerator.generate({
       template,
       filename,
-      width: Panel.VO.PanelWidth,
-      height: Panel.VO.PanelHeight,
+      width: PanelWidth,
+      height: PanelHeight,
     });
 
     const file = new File([image], filename.toString());
@@ -38,6 +42,6 @@ export const handleGeneratePanelCommand =
     await deps.ImageGrayscale.grayscale({ strategy: "in_place", input: temporary });
     await deps.RemoteFileStorage.putFromPath({
       path: temporary,
-      key: Panel.VO.PanelKeyFactory.stable(command.payload.language),
+      key: PanelKeyFactory.stable(command.payload.language),
     });
   };
