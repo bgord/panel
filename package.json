@@ -1,11 +1,8 @@
 {
   "name": "panel",
   "version": "1.0.0",
-  "description": "",
   "private": true,
-  "keywords": [],
   "author": "Bartosz Gordon",
-  "license": "ISC",
   "devDependencies": {
     "@biomejs/biome": "2.5.0",
     "@stryker-mutator/core": "9.6.1",
