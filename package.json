@@ -19,5 +19,15 @@
   "dependencies": {
     "@bgord/bun": "1.19.6",
     "@bgord/design": "1.6.17"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "bun",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "bun",
+      "onFail": "error"
+    }
   }
 }
