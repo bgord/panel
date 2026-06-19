@@ -5,7 +5,7 @@
     "": {
       "name": "panel",
       "dependencies": {
-        "@bgord/bun": "1.19.9",
+        "@bgord/bun": "1.19.11",
         "@bgord/design": "1.6.18",
       },
       "devDependencies": {
@@ -88,7 +88,7 @@
 
     "@babel/types": ["@babel/types@7.29.0", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.28.5" } }, "sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A=="],
 
-    "@bgord/bun": ["@bgord/bun@1.19.9", "", { "dependencies": { "@bgord/tools": "1.5.17", "emittery": "2.0.0", "hono": "4.12.25", "node-cache": "5.1.2" }, "peerDependencies": { "better-auth": "1.6.19", "croner": "10.0.1", "csv": "6.6.0", "nodemailer": "9.0.1", "yazl": "3.3.1" }, "optionalPeers": ["better-auth", "croner", "csv", "nodemailer", "yazl"] }, "sha512-+0aFJU2AqFXSyA2VzGStX+J2bThPwyMn5XzayfAET3EaBMN0LBrOZd5clj0gtPzoKCRdz9Eq78W/sGu8oh/+lw=="],
+    "@bgord/bun": ["@bgord/bun@1.19.11", "", { "dependencies": { "@bgord/tools": "1.5.17", "emittery": "2.0.0", "hono": "4.12.25", "node-cache": "5.1.2" }, "peerDependencies": { "better-auth": "1.6.19", "croner": "10.0.1", "csv": "6.6.0", "nodemailer": "9.0.1", "yazl": "3.3.1" }, "optionalPeers": ["better-auth", "croner", "csv", "nodemailer", "yazl"] }, "sha512-KUOMDPLbpDs36HRGsalBewa1hKavxbaBhgqq6KZsGMd4xpLtz4sQUU6HuKJ44DNpbRb/kyOjvVLPgcuNs5tqYw=="],
 
     "@bgord/design": ["@bgord/design@1.6.18", "", {}, "sha512-sxCrcWwsebwYSVOVKqv7sC29NFlUy0c6PVzusnOVshIsETdWgcebZMIX4/pnEiuvPKV8Sx45U9DLuddhaFwNMQ=="],
 
