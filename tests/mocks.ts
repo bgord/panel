@@ -17,7 +17,7 @@ const expectAnyId = expect.stringMatching(
 
 export const ip = { server: { requestIP: () => ({ address: "127.0.0.1" }) } };
 
-export const etag = bg.Hash.fromString("0000000000000000000000000000000000000000000000000000000000000000");
+const etag = bg.Hash.fromString("0000000000000000000000000000000000000000000000000000000000000000");
 
 export const head = {
   exists: true,
