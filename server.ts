@@ -18,7 +18,7 @@ export function createServer({ Env, Adapters, Tools }: BootstrapType) {
         {
           csrf: { origin },
           cors: { origin },
-          I18n: { languages, strategies: [new bg.LanguageDetectorCookieStrategy("language")] },
+          I18n: { languages, strategies: [new bg.LanguageDetectorHeaderStrategy()] },
         },
         { ...Adapters.System, ...Tools, CacheResolver },
       ),
@@ -46,6 +46,15 @@ export function createServer({ Env, Adapters, Tools }: BootstrapType) {
         JobQueueStatsProvider: Tools.JobQueueStatsProvider,
       },
     ).handle(),
+  );
+  // =============================
+
+  // Panel =======================
+  server.get(
+    "/panel",
+    Tools.ShieldRateLimit.handle(),
+    Tools.ShieldTimeout.handle(),
+    HTTP.Panel.GetPanel(Adapters.System),
   );
   // =============================
 

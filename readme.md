@@ -82,6 +82,8 @@ modules/
 app/
 ├── http
 │   ├── error-handler.ts
+│   └── panel
+│       ├── get-panel.ts
 ```
 
 ## Infra:
@@ -276,7 +278,8 @@ infra/
 │           ├── 1778870308896.png
 │           ├── 1778870319566.png
 │           ├── 1778870328879.png
-│           └── 1778870340376.png
+│           ├── 1778870340376.png
+│           └── 1781945861096.png
 ├── bootstrap.ts
 ├── env.ts
 ├── register-command-handlers.ts
