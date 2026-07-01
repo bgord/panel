@@ -112,6 +112,7 @@ infra/
 │       ├── image-grayscale.adapter.ts
 │       ├── image-processor.adapter.ts
 │       ├── logger.adapter.ts
+│       ├── nonce-provider.adapter.ts
 │       ├── remote-file-storage.adapter.ts
 │       ├── sleeper.adapter.ts
 │       ├── temporary-file.adapter.ts

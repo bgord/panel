@@ -1,7 +1,11 @@
 import * as bg from "@bgord/bun";
 import type { EnvironmentResultType } from "+infra/env";
 
-type Dependencies = { FileRenamer: bg.FileRenamerPort; FileWriter: bg.FileWriterPort };
+type Dependencies = {
+  FileRenamer: bg.FileRenamerPort;
+  FileWriter: bg.FileWriterPort;
+  NonceProvider: bg.NonceProviderPort;
+};
 
 export function createImageGrayscale(Env: EnvironmentResultType, deps: Dependencies): bg.ImageGrayscalePort {
   const ImageGrayscale = new bg.ImageGrayscaleAdapter(deps);

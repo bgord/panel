@@ -22,7 +22,7 @@ export function createPrerequisites(
   Env: EnvironmentResultType,
   deps: Dependencies,
 ): { healthcheck: Array<bg.Prerequisite>; readiness: Array<bg.Prerequisite> } {
-  const hostname = "panel.bgord.dev";
+  const hostname = v.parse(bg.Hostname, "panel.bgord.space");
   const production = Env.type === bg.NodeEnvironmentEnum.production;
   const local = Env.type === bg.NodeEnvironmentEnum.local;
 
@@ -94,7 +94,7 @@ export function createPrerequisites(
       new bg.Prerequisite(
         "ssl",
         new bg.PrerequisiteVerifierSSLCertificateExpiryAdapter(
-          { hostname: "panel.bgord.dev", minimum: tools.Duration.Days(7) },
+          { hostname, minimum: tools.Duration.Days(7) },
           deps,
         ),
         { enabled: production, decorators: [withFailSafe, withRetry, withTimeout] },

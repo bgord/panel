@@ -14,6 +14,7 @@ import { createImageGenerator } from "./image-generator.adapter";
 import { createImageGrayscale } from "./image-grayscale.adapter";
 import { createImageProcessor } from "./image-processor.adapter";
 import { createLogger } from "./logger.adapter";
+import { NonceProvider } from "./nonce-provider.adapter";
 import { createRemoteFileStorage } from "./remote-file-storage.adapter";
 import { createSleeper } from "./sleeper.adapter";
 import { createTemporaryFile } from "./temporary-file.adapter";
@@ -27,7 +28,7 @@ export async function createSystemAdapters(Env: EnvironmentResultType) {
   const FileRenamer = createFileRenamer(Env);
   const Sleeper = createSleeper(Env);
   const TimeoutRunner = createTimeoutRunner(Env);
-  const TemporaryFile = createTemporaryFile(Env, { FileCleaner, FileRenamer, FileWriter });
+  const TemporaryFile = createTemporaryFile(Env, { FileCleaner, FileRenamer, FileWriter, NonceProvider });
   const Timekeeper = createTimekeeper(Env, { Clock });
   const FileInspection = createFileInspection(Env);
   const HashFile = createHashFile({ FileInspection });
@@ -45,11 +46,24 @@ export async function createSystemAdapters(Env: EnvironmentResultType) {
     FileRenamer,
     TemporaryFile,
     HashFile,
-    ImageProcessor: createImageProcessor(Env, { FileCleaner, FileRenamer, FileReaderJson, FileWriter }),
-    ImageGrayscale: createImageGrayscale(Env, { FileRenamer, FileWriter }),
+    ImageProcessor: createImageProcessor(Env, {
+      FileCleaner,
+      FileRenamer,
+      FileReaderJson,
+      FileWriter,
+      NonceProvider,
+    }),
+    ImageGrayscale: createImageGrayscale(Env, { FileRenamer, FileWriter, NonceProvider }),
     Sleeper,
     TimeoutRunner,
-    RemoteFileStorage: createRemoteFileStorage(Env, { HashFile, FileCleaner, FileRenamer, Logger, Clock }),
+    RemoteFileStorage: createRemoteFileStorage(Env, {
+      HashFile,
+      FileCleaner,
+      FileRenamer,
+      NonceProvider,
+      Logger,
+      Clock,
+    }),
     FileInspection,
     ImageGenerator: createImageGenerator(Env),
   };
