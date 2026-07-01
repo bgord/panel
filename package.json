@@ -16,8 +16,8 @@
     "typescript": "7.0.1-rc"
   },
   "dependencies": {
-    "@bgord/bun": "1.19.13",
-    "@bgord/design": "1.6.19"
+    "@bgord/bun": "1.19.14",
+    "@bgord/design": "1.6.20"
   },
   "devEngines": {
     "runtime": {
