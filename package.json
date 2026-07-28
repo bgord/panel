@@ -16,7 +16,7 @@
     "typescript": "7.0.2"
   },
   "dependencies": {
-    "@bgord/bun": "1.20.2",
+    "@bgord/bun": "1.20.3",
     "@bgord/design": "1.7.1"
   },
   "devEngines": {

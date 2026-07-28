@@ -6,6 +6,9 @@ import * as Panel from "+panel";
 type Dependencies = { RemoteFileStorage: bg.RemoteFileStoragePort };
 
 export const GetPanel = (deps: Dependencies) => async (c: hono.Context<infra.Config>) => {
+  const context = new bg.RequestContextHonoAdapter(c);
+  const headers = context.request.headers();
+
   const language = c.get("language");
 
   const key = Panel.VO.PanelKeyFactory.stable(language);
@@ -13,7 +16,7 @@ export const GetPanel = (deps: Dependencies) => async (c: hono.Context<infra.Con
   const head = await deps.RemoteFileStorage.head(key);
   if (!head.exists) return c.notFound();
 
-  const ifNoneMatchHeader = c.req.header("if-none-match");
+  const ifNoneMatchHeader = headers.get("if-none-match");
 
   if (ifNoneMatchHeader && bg.Hash.fromString(ifNoneMatchHeader).matches(head.etag)) {
     return bg.CacheFileMustRevalidate.notModified(head);
