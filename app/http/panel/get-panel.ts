@@ -9,12 +9,12 @@ export const GetPanel = (deps: Dependencies) => async (c: hono.Context<infra.Con
   const context = new bg.RequestContextHonoAdapter(c);
   const headers = context.request.headers();
 
-  const language = c.get("language");
+  const language = context.middleware.language();
 
   const key = Panel.VO.PanelKeyFactory.stable(language);
 
   const head = await deps.RemoteFileStorage.head(key);
-  if (!head.exists) return c.notFound();
+  if (!head.exists) return new Response(null, { status: 404 });
 
   const ifNoneMatchHeader = headers.get("if-none-match");
 
@@ -23,7 +23,7 @@ export const GetPanel = (deps: Dependencies) => async (c: hono.Context<infra.Con
   }
 
   const stream = await deps.RemoteFileStorage.getStream(key);
-  if (!stream) return c.notFound();
+  if (!stream) return new Response(null, { status: 404 });
 
   return new Response(stream, { headers: bg.CacheFileMustRevalidate.fresh(head) });
 };
