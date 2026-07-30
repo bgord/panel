@@ -9,9 +9,7 @@ export const GetPanel = (deps: Dependencies) => async (c: hono.Context<infra.Con
   const context = new bg.RequestContextHonoAdapter(c);
   const headers = context.request.headers();
 
-  const language = context.middleware.language();
-
-  const key = Panel.VO.PanelKeyFactory.stable(language);
+  const key = Panel.VO.PanelKeyFactory.stable(context.middleware.language());
 
   const head = await deps.RemoteFileStorage.head(key);
   if (!head.exists) return new Response(null, { status: 404 });
