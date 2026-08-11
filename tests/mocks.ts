@@ -10,6 +10,7 @@ export const correlationId = "00000000-0000-0000-0000-000000000000";
 
 // Timestamps
 const T0 = tools.Timestamp.fromInstant(tools.Temporal.Instant.from("2025-01-01T00:00:00Z"));
+export const T0Date = "Wed, 01 Jan 2025 00:00:00 GMT";
 
 const expectAnyId = expect.stringMatching(
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
