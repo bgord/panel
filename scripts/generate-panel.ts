@@ -1,4 +1,5 @@
 import * as bg from "@bgord/bun";
+import * as v from "valibot";
 import { languages } from "+languages";
 import * as Panel from "+panel";
 import { bootstrap } from "+infra/bootstrap";
@@ -8,7 +9,7 @@ import { registerCommandHandlers } from "+infra/register-command-handlers";
   const di = await bootstrap();
   registerCommandHandlers(di);
 
-  const correlationId = di.Adapters.System.IdProvider.generate();
+  const correlationId = v.parse(bg.CorrelationId, di.Adapters.System.IdProvider.generate());
 
   await bg.CorrelationStorage.run(correlationId, async () => {
     for (const language of languages.values) {
