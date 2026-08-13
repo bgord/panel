@@ -7,6 +7,7 @@ import * as Panel from "+panel";
 
 // IDs
 export const correlationId = v.parse(bg.CorrelationId, "00000000-0000-0000-0000-000000000000");
+export const revision = v.parse(tools.RevisionValue, 0);
 
 // Timestamps
 const T0 = tools.Timestamp.fromInstant(tools.Temporal.Instant.from("2025-01-01T00:00:00Z"));
@@ -54,6 +55,6 @@ export const GenericGeneratePanelJob = {
   correlationId: correlationId,
   createdAt: T0.ms,
   name: Panel.Jobs.GENERATE_PANEL_JOB,
-  revision: 0,
+  revision,
   payload: { location, timezone, language: "en" },
 } satisfies Panel.Jobs.GeneratePanelJobType;
