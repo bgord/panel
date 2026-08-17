@@ -55,7 +55,7 @@ export function createServer({ Env, Adapters, Tools }: BootstrapType) {
     "/panel",
     Tools.ShieldRateLimit.handle(),
     Tools.ShieldTimeout.handle(),
-    HTTP.Panel.GetPanel(Adapters.System),
+    bg.EndpointHonoAdapter.adapt(HTTP.Panel.GetPanel(Adapters.System)),
   );
   // =============================
 
