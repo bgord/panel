@@ -17,9 +17,9 @@ export class PanelTemplate {
             ? "sensitive"
             : weather.aqi <= 200
               ? "unhealthy"
-              : weather.aqi
+              : weather.aqi <= 300
                 ? "very unhealthy"
-                : weather.aqi
+                : weather.aqi <= 500
                   ? "hazardous"
                   : "";
 

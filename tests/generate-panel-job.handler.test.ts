@@ -14,6 +14,10 @@ describe("LocationFramesCleanupJobHandler", async () => {
 
   test("happy path", async () => {
     using putFromPath = spyOn(di.Adapters.System.RemoteFileStorage, "putFromPath");
+    using write = spyOn(di.Adapters.System.TemporaryFile, "write");
+    using _ = spyOn(di.Adapters.System.ImageGenerator, "generate").mockResolvedValue(
+      new Uint8Array([1, 2, 3]),
+    );
 
     await bg.CorrelationStorage.run(mocks.correlationId, async () => handler(mocks.GenericGeneratePanelJob));
 
@@ -22,5 +26,6 @@ describe("LocationFramesCleanupJobHandler", async () => {
       path: expect.any(tools.FilePathAbsolute),
       key: mocks.objectKey,
     });
+    expect(write.mock.calls[0]?.[1].size).toEqual(3);
   });
 });
