@@ -6,7 +6,7 @@
       "name": "panel",
       "dependencies": {
         "@bgord/bun": "1.21.12",
-        "@bgord/design": "1.7.1",
+        "@bgord/design": "1.7.2",
       },
       "devDependencies": {
         "@biomejs/biome": "2.5.10",
@@ -100,7 +100,7 @@
 
     "@bgord/bun": ["@bgord/bun@1.21.12", "", { "dependencies": { "@bgord/tools": "1.6.8", "emittery": "2.0.0", "hono": "4.13.2", "node-cache": "5.1.2" }, "peerDependencies": { "better-auth": "1.6.29", "csv": "6.6.3", "nodemailer": "9.0.5", "yazl": "3.3.1" }, "optionalPeers": ["better-auth", "csv", "nodemailer", "yazl"] }, "sha512-LbTeSOd9+sbdZDbtXhYlp3huN6JETWEuuK76Xz8r46aXBHyJpEv4QO4Xm1kQI0hYJQvGqriPXmUmM75SHL1pkQ=="],
 
-    "@bgord/design": ["@bgord/design@1.7.1", "", {}, "sha512-pxWjk013YJUgb2tvBwofOILe1qGWUaBJLltJZ5igV294OTxdtZDSbdEQvcEdZAznRCcjGmJ7ln0la0YXTZFiFQ=="],
+    "@bgord/design": ["@bgord/design@1.7.2", "", {}, "sha512-Db6SU86d+Q8mv2dgQUjGyB/K3LcwJ9Ckgdug+dZ4hpDUchJstQn9VM2uAo+embNG/BSHfqBGEEKz55cKZtnSEQ=="],
 
     "@bgord/tools": ["@bgord/tools@1.6.8", "", { "dependencies": { "temporal-polyfill": "1.0.4", "valibot": "1.4.2" } }, "sha512-Axrbi9fgijSAR23etgE9+n9RR9VQQp3fkOUzy5vpNCA6FcE3FpoxbTCVsAkztYIZQf3qD/JPNHPVeODdTMYIWw=="],
 
