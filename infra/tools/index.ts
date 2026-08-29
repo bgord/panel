@@ -1,7 +1,6 @@
 import type * as bg from "@bgord/bun";
 import type { EnvironmentResultType } from "+infra/env";
 import { createBuildInfoConfig } from "./build-info-config.adapter";
-import { createCacheResponse } from "./cache-response";
 import { createCommandBus } from "./command-bus";
 import { createCronScheduler } from "./cron-scheduler.adapter";
 import { HashContent } from "./hash-content.strategy";
@@ -30,7 +29,6 @@ export async function createTools(Env: EnvironmentResultType, deps: Dependencies
   const CronScheduler = await createCronScheduler(Env, deps);
 
   return {
-    CacheResponse: createCacheResponse({ HashContent }),
     CronScheduler,
     Prerequisites: createPrerequisites(Env, { ...deps, CronScheduler }),
     ShieldBasicAuth: createShieldBasicAuth(Env),

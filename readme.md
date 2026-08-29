@@ -288,7 +288,6 @@ infra/
 ├── register-cron-tasks.ts
 └── tools
     ├── build-info-config.adapter.ts
-    ├── cache-response.ts
     ├── command-bus.ts
     ├── cron-scheduler.adapter.ts
     ├── hash-content.strategy.ts

@@ -8,7 +8,7 @@ import { host, localhost } from "+infra/config";
 
 export function createServer({ Env, Adapters, Tools }: BootstrapType) {
   const CacheRepository = new bg.CacheRepositoryNodeCacheAdapter({ type: "infinite" });
-  const CacheResolver = new bg.CacheResolverSimpleStrategy({ CacheRepository });
+  const CacheResolver = new bg.CacheResolverReadThroughStrategy({ CacheRepository });
 
   const origin = [localhost, host];
 

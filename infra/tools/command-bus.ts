@@ -1,7 +1,7 @@
 import * as bg from "@bgord/bun";
 import type * as Panel from "+panel";
 
-type Dependencies = { Logger: bg.LoggerPort };
+type Dependencies = { Logger: bg.LoggerPort; Clock: bg.ClockPort };
 
 type AcceptedCommand = Panel.Commands.GeneratePanelCommandType;
 
