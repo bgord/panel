@@ -5,7 +5,7 @@ import { registerCommandHandlers } from "+infra/register-command-handlers";
 import { registerCronTasks } from "+infra/register-cron-tasks";
 import { createServer } from "./server";
 
-(async function main() {
+void (async function main() {
   const di = await bootstrap();
   const server = createServer(di);
 

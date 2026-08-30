@@ -5,7 +5,7 @@ import * as Panel from "+panel";
 import { bootstrap } from "+infra/bootstrap";
 import { registerCommandHandlers } from "+infra/register-command-handlers";
 
-(async function main() {
+void (async function main() {
   const di = await bootstrap();
   registerCommandHandlers(di);
 
