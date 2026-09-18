@@ -11,13 +11,13 @@
     "actions-up": "1.20.0",
     "cspell": "10.3.0",
     "fallow": "3.25.0",
-    "lefthook": "2.1.12",
+    "lefthook": "2.1.14",
     "lockfile-lint": "5.0.1",
     "shellcheck": "4.1.0",
     "typescript": "7.0.2"
   },
   "dependencies": {
-    "@bgord/bun": "1.23.5",
+    "@bgord/bun": "1.23.6",
     "@bgord/design": "1.8.0"
   },
   "devEngines": {
