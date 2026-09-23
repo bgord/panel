@@ -6,7 +6,7 @@ import { bootstrap } from "+infra/bootstrap";
 import { registerCommandHandlers } from "+infra/register-command-handlers";
 import * as mocks from "./mocks";
 
-describe("LocationFramesCleanupJobHandler", async () => {
+describe("GeneratePanelJobHandler", async () => {
   const di = await bootstrap();
   registerCommandHandlers(di);
 
