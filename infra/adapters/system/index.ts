@@ -1,4 +1,5 @@
 import type { EnvironmentResultType } from "+infra/env";
+import { createAtomicFileWriter } from "./atomic-file-writer.adapter";
 import { createCertificateInspector } from "./certificate-inspector.adapter";
 import { createClock } from "./clock.adapter";
 import { createDiskSpaceChecker } from "./disk-space-checker.adapter";
@@ -26,9 +27,10 @@ export async function createSystemAdapters(Env: EnvironmentResultType) {
   const Logger = createLogger(Env, { Clock });
   const FileCleaner = createFileCleaner(Env);
   const FileRenamer = createFileRenamer(Env);
+  const AtomicFileWriter = createAtomicFileWriter({ FileCleaner, FileRenamer, FileWriter, NonceProvider });
   const Sleeper = createSleeper(Env);
   const TimeoutRunner = createTimeoutRunner(Env);
-  const TemporaryFile = createTemporaryFile(Env, { FileCleaner, FileRenamer, FileWriter, NonceProvider });
+  const TemporaryFile = createTemporaryFile(Env, { AtomicFileWriter, FileCleaner });
   const Timekeeper = createTimekeeper(Env, { Clock });
   const FileInspection = createFileInspection(Env);
   const HashFile = createHashFile({ FileInspection });
@@ -47,21 +49,18 @@ export async function createSystemAdapters(Env: EnvironmentResultType) {
     TemporaryFile,
     HashFile,
     ImageProcessor: createImageProcessor(Env, {
+      AtomicFileWriter,
       FileCleaner,
-      FileRenamer,
       FileReaderJson,
-      FileWriter,
-      NonceProvider,
     }),
-    ImageGrayscale: createImageGrayscale(Env, { FileRenamer, FileWriter, NonceProvider }),
+    ImageGrayscale: createImageGrayscale(Env, { AtomicFileWriter }),
     Sleeper,
     TimeoutRunner,
     RemoteFileStorage: createRemoteFileStorage(Env, {
+      AtomicFileWriter,
       HashFile,
       FileCleaner,
-      FileRenamer,
       FileInspection,
-      NonceProvider,
       Logger,
       Clock,
     }),

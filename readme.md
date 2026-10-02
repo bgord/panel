@@ -97,6 +97,7 @@ infra/
 │   │   ├── weather-provider.adapter.ts
 │   │   └── wmo-codes.ts
 │   └── system
+│       ├── atomic-file-writer.adapter.ts
 │       ├── certificate-inspector.adapter.ts
 │       ├── clock.adapter.ts
 │       ├── disk-space-checker.adapter.ts

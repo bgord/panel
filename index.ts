@@ -9,8 +9,6 @@ void (async function main() {
   const di = await bootstrap();
   const server = createServer(di);
 
-  bg.EventLoopLag.start();
-
   registerCommandHandlers(di);
   registerCronTasks(di);
 
