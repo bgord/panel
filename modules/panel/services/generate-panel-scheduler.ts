@@ -10,7 +10,7 @@ type Config = { location: Panel.VO.PanelLocationType; timezone: tools.TimezoneTy
 type Dependencies = {
   IdProvider: bg.IdProviderPort;
   Clock: bg.ClockPort;
-  JobQueue: bg.JobDispatcherPort<AcceptedJob>;
+  JobDispatcher: bg.JobDispatcherPort<AcceptedJob>;
 };
 
 export class GeneratePanelScheduler {
@@ -23,7 +23,7 @@ export class GeneratePanelScheduler {
     for (const language of languages.values) {
       const job = bg.job(GeneratePanelJobSchema, { ...this.config, language }, this.deps);
 
-      await this.deps.JobQueue.enqueue(job);
+      await this.deps.JobDispatcher.enqueue(job);
     }
   }
 }

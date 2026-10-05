@@ -13,7 +13,7 @@ describe("GeneratePanelScheduler", async () => {
   );
 
   test("happy path", async () => {
-    using enqueue = spyOn(di.Tools.JobQueue, "enqueue");
+    using enqueue = spyOn(di.Tools.JobDispatcher, "enqueue");
 
     await bg.CorrelationStorage.run(mocks.correlationId, async () => scheduler.handle());
 

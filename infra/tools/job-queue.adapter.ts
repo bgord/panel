@@ -18,6 +18,7 @@ export async function createJobQueue(
   deps: Dependencies,
 ): Promise<{
   JobQueue: bg.JobQueuePort<AcceptedJob>;
+  JobDispatcher: bg.JobDispatcherPort<AcceptedJob>;
   JobQueueStatsProvider: bg.JobQueueStatsProviderPort;
   JobPruner: bg.JobPrunerPort;
 }> {
@@ -45,13 +46,16 @@ export async function createJobQueue(
     serializer: new bg.PayloadSerializerJsonAdapter(),
   });
 
+  const EnvironmentJobQueue = {
+    [bg.NodeEnvironmentEnum.local]: JobQueue,
+    [bg.NodeEnvironmentEnum.test]: new bg.JobQueueAdapterNoop<AcceptedJob>({ registry }),
+    [bg.NodeEnvironmentEnum.staging]: JobQueue,
+    [bg.NodeEnvironmentEnum.production]: JobQueue,
+  }[Env.type];
+
   return {
-    JobQueue: {
-      [bg.NodeEnvironmentEnum.local]: JobQueue,
-      [bg.NodeEnvironmentEnum.test]: new bg.JobQueueAdapterNoop<AcceptedJob>({ registry }),
-      [bg.NodeEnvironmentEnum.staging]: JobQueue,
-      [bg.NodeEnvironmentEnum.production]: JobQueue,
-    }[Env.type],
+    JobQueue: EnvironmentJobQueue,
+    JobDispatcher: EnvironmentJobQueue,
 
     JobQueueStatsProvider: {
       [bg.NodeEnvironmentEnum.local]: new bg.JobQueueStatsProviderNoopAdapter(),

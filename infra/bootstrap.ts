@@ -12,12 +12,15 @@ export async function bootstrap() {
   const Panel = await createPanelAdapters(Env, System);
   const Tools = await createTools(Env, System);
 
-  const { JobQueue, JobQueueStatsProvider, JobPruner } = await createJobQueue(Env, { ...System, ...Tools });
+  const { JobQueue, JobDispatcher, JobQueueStatsProvider, JobPruner } = await createJobQueue(Env, {
+    ...System,
+    ...Tools,
+  });
 
   return {
     Env,
     Adapters: { System, Panel },
-    Tools: { ...Tools, JobQueue, JobQueueStatsProvider, JobPruner },
+    Tools: { ...Tools, JobQueue, JobDispatcher, JobQueueStatsProvider, JobPruner },
   };
 }
 
